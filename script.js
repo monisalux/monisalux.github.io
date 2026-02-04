@@ -164,6 +164,18 @@ const demoSlots = [
   const activeBookings = [];
 
   closeModal.onclick = () => modal.classList.add("hidden");
+  
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    modal.classList.add("hidden");
+  }
+});
 
   window.extraSessionsCalendar.on("eventClick", (info) => {
     if (!info.event.classNames.includes("available")) return;
