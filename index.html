@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WeStudy Tutoring</title>
 
-  <!-- Cache-buster so styles ALWAYS load -->
-  <link rel="stylesheet" href="style.css?v=7" />
-  <script defer src="script.js?v=7"></script>
+  <!-- Cache buster -->
+  <link rel="stylesheet" href="style.css?v=10" />
+  <script defer src="script.js?v=10"></script>
 </head>
 
 <body>
 
-<!-- HERO / HEADER -->
+<!-- ================= HERO ================= -->
 <header class="hero">
   <div class="hero-inner">
 
-    <!-- TOP BAR -->
+    <!-- Top bar -->
     <div class="top-bar">
       <h1 class="logo">WeStudy</h1>
 
       <!-- Mascot -->
-      <div class="mascot" title="Hi!">
+      <div class="mascot" aria-hidden="true">
         <div class="face">
           <span class="eye left"></span>
           <span class="eye right"></span>
@@ -35,6 +35,7 @@
       </button>
     </div>
 
+    <!-- Hero content -->
     <h2 class="hero-title">Learning that feels easier.</h2>
     <p class="hero-sub">
       Friendly university tutors • JK–Grade 12 • In-person & virtual • Flexible scheduling
@@ -42,7 +43,14 @@
 
     <div class="hero-actions">
       <button class="btn btn-primary tablink" data-tab="join">Get Started</button>
-      <button class="btn btn-ghost tablink" data-tab="resources">Resources</button>
+      <button class="btn btn-ghost tablink" data-tab="resources">Explore Resources</button>
+    </div>
+
+    <!-- Hero features -->
+    <div class="hero-features">
+      <div class="hero-chip">🎓 University Tutors</div>
+      <div class="hero-chip">🧒 JK–Grade 12</div>
+      <div class="hero-chip">⏰ Flexible Scheduling</div>
     </div>
 
   </div>
@@ -53,7 +61,7 @@
   </svg>
 </header>
 
-<!-- TABS -->
+<!-- ================= TABS ================= -->
 <nav class="tabs">
   <button class="tab active" data-tab="about">About Us</button>
   <button class="tab" data-tab="join">Join Us</button>
@@ -62,12 +70,12 @@
 
 <main class="container">
 
-<!-- ABOUT -->
+<!-- ================= ABOUT ================= -->
 <section id="about" class="tab-content active">
   <h3>Who We Are</h3>
   <p class="muted">
-    WeStudy is a student-focused tutoring service supporting children from
-    Junior Kindergarten through Grade 12.
+    WeStudy is a student-focused tutoring service helping children from
+    Junior Kindergarten through Grade 12 succeed with confidence.
   </p>
 
   <div class="card-grid two">
@@ -75,11 +83,11 @@
       <h4>Our Story</h4>
       <p>
         Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
-        <strong>10 university-level tutors</strong>.
+        <strong>10 university-level tutors</strong> passionate about teaching.
       </p>
       <p>
-        We personalize learning and are known for our
-        <strong>flexible scheduling</strong> for families.
+        We adapt to each student’s learning style and are known for our
+        <strong>flexible scheduling</strong>.
       </p>
     </div>
 
@@ -94,7 +102,6 @@
     </div>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat lift"><span>6+</span>Years</div>
     <div class="stat lift"><span>10</span>Tutors</div>
@@ -103,48 +110,70 @@
   </div>
 </section>
 
-<!-- JOIN -->
+<!-- ================= JOIN ================= -->
 <section id="join" class="tab-content">
   <h3>Submit an Inquiry</h3>
   <p class="muted">We’ll get back to you within 24 hours.</p>
 
-  <form class="join-form" onsubmit="return submitForm(event)">
+  <form class="join-form" id="inquiryForm">
     <input required placeholder="Parent / Student Name">
     <input required type="email" placeholder="Email">
     <input placeholder="Phone Number">
     <input required placeholder="Student Grade">
     <input required placeholder="Subject(s)">
     <textarea required placeholder="Availability"></textarea>
+
     <button class="btn btn-primary bounce">Submit Inquiry</button>
     <p id="formMsg"></p>
   </form>
 </section>
 
-<!-- RESOURCES -->
+<!-- ================= RESOURCES ================= -->
 <section id="resources" class="tab-content">
   <h3>Resources</h3>
   <p class="muted">Click a subject to view resources by grade.</p>
 
   <div class="resource-grid">
 
-    <div class="resource-card">
-      <div class="resource-header">🧮 Math</div>
+    <div class="resource-card" data-open="false">
+      <button class="resource-header">
+        🧮 Math
+        <span class="chevron">▾</span>
+      </button>
       <div class="resource-body">
-        <p>JK–5 • Grades 6–8 • Grades 9–12</p>
+        <ul>
+          <li>JK–5: Resources coming soon</li>
+          <li>Grades 6–8: Resources coming soon</li>
+          <li>Grades 9–12: Resources coming soon</li>
+        </ul>
       </div>
     </div>
 
-    <div class="resource-card">
-      <div class="resource-header">📚 Language</div>
+    <div class="resource-card" data-open="false">
+      <button class="resource-header">
+        📚 Language
+        <span class="chevron">▾</span>
+      </button>
       <div class="resource-body">
-        <p>Reading • Writing • Grammar • French</p>
+        <ul>
+          <li>Reading & Writing</li>
+          <li>Grammar & French</li>
+          <li>Essay & literacy skills</li>
+        </ul>
       </div>
     </div>
 
-    <div class="resource-card">
-      <div class="resource-header">🔬 Science</div>
+    <div class="resource-card" data-open="false">
+      <button class="resource-header">
+        🔬 Science
+        <span class="chevron">▾</span>
+      </button>
       <div class="resource-body">
-        <p>Biology • Chemistry • Physics</p>
+        <ul>
+          <li>Biology</li>
+          <li>Chemistry</li>
+          <li>Physics</li>
+        </ul>
       </div>
     </div>
 
@@ -156,9 +185,6 @@
 <footer class="footer">
   © WeStudy Tutoring
 </footer>
-
-<!-- Confetti canvas -->
-<canvas id="confetti"></canvas>
 
 </body>
 </html>
