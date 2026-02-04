@@ -27,6 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(`.tab[data-tab="${tabId}"]`)?.classList.add("active");
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Fix FullCalendar render issue when tab becomes visible
+    if (tabId === "extras" && window.extraSessionsCalendar) {
+      setTimeout(() => {
+        window.extraSessionsCalendar.updateSize();
+      }, 50);
+    }
   }
 
   document.querySelectorAll(".tab, .tablink").forEach(btn => {
@@ -80,7 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarEl = document.getElementById("calendar");
   if (!calendarEl || typeof FullCalendar === "undefined") return;
 
-  const calendar = new FullCalendar.Calendar(calendarEl, {
+  window.extraSessionsCalendar = new FullCalendar.Calendar(calendarEl, {
+
     initialView: "timeGridWeek",
     timeZone: "America/Toronto",
     allDaySlot: false,
@@ -101,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  calendar.render();
+  window.extraSessionsCalendar.render();
 
   /* ===== DEMO AVAILABILITY (ET SAFE) ===== */
   function makeETDate(daysFromNow, hour, minute) {
@@ -118,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   demoSlots.forEach(slot => {
-    calendar.addEvent({
+    window.extraSessionsCalendar.addEvent({
       title: "Available",
       start: slot.start,
       end: new Date(slot.start.getTime() + slot.length * 60000),
@@ -140,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeModal.onclick = () => modal.classList.add("hidden");
 
-  calendar.on("eventClick", (info) => {
+  window.extraSessionsCalendar.on("eventClick", (info) => {
     if (!info.event.classNames.includes("available")) return;
 
     selectedEvent = info.event;
@@ -185,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     selectedEvent.remove();
-    calendar.addEvent({
+    window.extraSessionsCalendar.addEvent({
       title: "Booked",
       start: selectedEvent.start,
       end: new Date(selectedEvent.start.getTime() + duration * 60000),
