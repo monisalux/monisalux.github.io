@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ================= TABS ================= */
   function setTab(tabId){
     document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Expandable resources (robust)
+  /* ================= EXPANDABLE RESOURCES ================= */
   document.addEventListener("click", (e) => {
     const header = e.target.closest(".resource-header");
     if (!header) return;
@@ -26,30 +27,57 @@ document.addEventListener("DOMContentLoaded", () => {
     card.setAttribute("data-open", String(!isOpen));
   });
 
-  // Form submit + confetti
+  /* ================= EMAILJS ================= */
+
+  // Load EmailJS
+  const script = document.createElement("script");
+  script.src = "https://cdn.emailjs.com/dist/email.min.js";
+  document.body.appendChild(script);
+
+  script.onload = () => {
+    emailjs.init("z01UAn-dERFLYMxUV");
+  };
+
   const form = document.getElementById("inquiryForm");
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    launchConfetti();
-    document.getElementById("formMsg").textContent =
-      "🎉 Inquiry submitted! We’ll contact you soon.";
-    form.reset();
+
+    document.getElementById("formMsg").textContent = "Sending inquiry…";
+
+    emailjs.sendForm(
+      "service_ajfd3oo",
+      "westudy_inquiry",
+      form
+    )
+    .then(() => {
+      launchConfetti();
+      document.getElementById("formMsg").textContent =
+        "🎉 Inquiry sent! We’ll contact you shortly.";
+      form.reset();
+    })
+    .catch(() => {
+      document.getElementById("formMsg").textContent =
+        "❌ Something went wrong. Please try again.";
+    });
   });
 
 });
 
+/* ================= CONFETTI ================= */
 function launchConfetti(){
   const container = document.createElement("div");
   container.className = "confetti-container";
   document.body.appendChild(container);
 
   for(let i=0;i<40;i++){
-    const piece=document.createElement("span");
-    piece.className="confetti";
-    piece.style.left=Math.random()*100+"vw";
-    piece.style.backgroundColor=`hsl(${Math.random()*360},100%,70%)`;
+    const piece = document.createElement("span");
+    piece.className = "confetti";
+    piece.style.left = Math.random()*100 + "vw";
+    piece.style.backgroundColor =
+      `hsl(${Math.random()*360},100%,70%)`;
     container.appendChild(piece);
   }
 
-  setTimeout(()=>container.remove(),1200);
+  setTimeout(() => container.remove(), 1200);
 }
