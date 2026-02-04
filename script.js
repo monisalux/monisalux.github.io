@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   /* ============ CONFIG: replace these 3 values ============ */
-  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY_HERE";
-  const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID_HERE";
-  const TEMPLATE_TO_YOU = "YOUR_TEMPLATE_ID_TO_YOU_HERE";
-  const TEMPLATE_AUTOREPLY = "YOUR_TEMPLATE_ID_AUTOREPLY_HERE";
+  const EMAILJS_PUBLIC_KEY = "z01UAn-dERFLYMxUV";
+  const EMAILJS_SERVICE_ID = "service_ajfd3oo";
+  const TEMPLATE_TO_YOU = "westudy_inquiry";
+  const TEMPLATE_AUTOREPLY = "template_autoreply";
 
   /* ============ Tabs ============ */
   function setTab(tabId) {
