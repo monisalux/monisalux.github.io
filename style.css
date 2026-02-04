@@ -246,6 +246,58 @@ body{
   }
 }
 
+/* ===== BOOKING MODAL ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal.hidden { display: none; }
+
+.modal-card {
+  background: white;
+  padding: 22px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-card h3 { margin-top: 0; }
+
+.modal-card input,
+.modal-card select,
+.modal-card textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* Calendar availability */
+.fc-event.available {
+  background-color: #2ec4b6 !important;
+  border: none;
+  cursor: pointer;
+}
+
+.fc-event.booked {
+  background-color: #94a3b8 !important;
+  cursor: not-allowed;
+}
+
 
 /* Footer */
 .footer{
