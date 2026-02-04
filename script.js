@@ -1,14 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ============ CONFIG: replace these 3 values ============ */
+
   const EMAILJS_PUBLIC_KEY = "z01UAn-dERFLYMxUV";
   const EMAILJS_SERVICE_ID = "service_ajfd3oo";
   const TEMPLATE_TO_YOU = "westudy_inquiry";
   const TEMPLATE_AUTOREPLY = "template_autoreply";
 
+  let emailReady = false;
+
   /* ============ Tabs ============ */
   function setTab(tabId) {
-    document.querySelectorAll(".tab-content").forEach((s) => s.classList.remove("active"));
-    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
 
     const panel = document.getElementById(tabId);
     const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
@@ -18,17 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  document.querySelectorAll(".tab, .tablink").forEach((btn) => {
+  document.querySelectorAll(".tab, .tablink").forEach(btn => {
     btn.addEventListener("click", () => setTab(btn.dataset.tab));
   });
 
-  /* ============ Expandable resources (if present) ============ */
+  /* ============ Expandable resources ============ */
   document.addEventListener("click", (e) => {
     const header = e.target.closest(".resource-header");
     if (!header) return;
     const card = header.parentElement;
-    const isOpen = card.getAttribute("data-open") === "true";
-    card.setAttribute("data-open", String(!isOpen));
+    card.setAttribute(
+      "data-open",
+      card.getAttribute("data-open") === "true" ? "false" : "true"
+    );
   });
 
   /* ============ Load EmailJS ============ */
@@ -37,14 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(emailJsScript);
 
   emailJsScript.onload = () => {
-    if (!window.emailjs) {
-      console.error("EmailJS failed to load.");
-      return;
-    }
-    window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailReady = true;
+    console.log("EmailJS ready");
   };
 
-  /* ============ Inquiry form: send to you + auto-reply ============ */
+  /* ============ Inquiry Form ============ */
   const form = document.getElementById("inquiryForm");
   const msg = document.getElementById("formMsg");
 
@@ -57,53 +59,48 @@ document.addEventListener("DOMContentLoaded", () => {
     return (el?.value || "").trim();
   }
 
-  form?.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Basic front-end validation
-    const name = getValue("name");
-    const email = getValue("email");
-    const grade = getValue("grade");
-    const subjects = getValue("subjects");
-    const availability = getValue("availability");
-    const phone = getValue("phone");
+    if (!emailReady) {
+      setMsg("❌ Email service not ready. Please try again.");
+      return;
+    }
 
-    if (!name || !email || !grade || !subjects || !availability) {
+    const payload = {
+      name: getValue("name"),
+      email: getValue("email"),
+      phone: getValue("phone"),
+      grade: getValue("grade"),
+      subjects: getValue("subjects"),
+      availability: getValue("availability"),
+      reply_to: getValue("email"),
+      timestamp: new Date().toLocaleString()
+    };
+
+    if (!payload.name || !payload.email || !payload.grade || !payload.subjects || !payload.availability) {
       setMsg("❌ Please fill in all required fields.");
       return;
     }
 
     setMsg("Sending…");
 
-    const payload = {
-      name,
-      email,          // used in your “to you” template
-      phone,
-      grade,
-      subjects,
-      availability,
-      reply_to: email, // used in auto-reply template to send to the parent
-      timestamp: new Date().toLocaleString()
-    };
-
     try {
-      // 1) Send inquiry email to you
-      await window.emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_TO_YOU, payload);
-
-      // 2) Send auto-reply to parent
-      await window.emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_AUTOREPLY, payload);
+      await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_TO_YOU, payload);
+      await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_AUTOREPLY, payload);
 
       launchConfetti();
-      setMsg("🎉 Sent! We’ll contact you within 24 hours.");
+      setMsg("🎉 Inquiry sent! We’ll contact you within 24 hours.");
       form.reset();
+
     } catch (err) {
-      console.error(err);
-      setMsg("❌ Something went wrong. Please try again.");
+      console.error("EmailJS error:", err);
+      setMsg("❌ Failed to send. Please try again.");
     }
   });
 });
 
-/* ============ Confetti (micro-animation) ============ */
+/* ============ Confetti ============ */
 function launchConfetti() {
   const container = document.createElement("div");
   container.className = "confetti-container";
@@ -113,8 +110,7 @@ function launchConfetti() {
     const piece = document.createElement("span");
     piece.className = "confetti";
     piece.style.left = Math.random() * 100 + "vw";
-    piece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
-    piece.style.animationDelay = Math.random() * 0.2 + "s";
+    piece.style.backgroundColor = `hsl(${Math.random() * 360},100%,70%)`;
     container.appendChild(piece);
   }
 
