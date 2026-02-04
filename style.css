@@ -184,6 +184,29 @@ body{
 .chevron{transition:transform .3s ease}
 .resource-card[data-open="true"] .chevron{transform:rotate(180deg)}
 
+.confetti-container{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+}
+
+.confetti{
+  position:absolute;
+  top:-10px;
+  width:8px;
+  height:8px;
+  animation:fall 1s ease forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(100vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+
 /* Footer */
 .footer{
   text-align:center;
