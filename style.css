@@ -266,6 +266,7 @@ body{
   width: 100%;
   max-width: 420px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  position: relative;
 }
 
 .modal-card h3 { margin-top: 0; }
@@ -296,6 +297,23 @@ body{
 .fc-event.booked {
   background-color: #94a3b8 !important;
   cursor: not-allowed;
+}
+
+/* Modal close (X) */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+}
+
+.modal-close:hover {
+  color: #000;
 }
 
 
