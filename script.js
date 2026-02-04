@@ -159,7 +159,9 @@ const demoSlots = [
   const bookingMsg = document.getElementById("bookingMsg");
   const selectedTimeText = document.getElementById("selectedTimeText");
   const durationSelect = bookingForm.duration;
+  const modalX = document.getElementById("modalX");
 
+  modalX.onclick = () => modal.classList.add("hidden");
   let selectedEvent = null;
   const activeBookings = [];
 
