@@ -213,5 +213,36 @@
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
+  <!-- ================= BOOKING MODAL ================= -->
+<div id="bookingModal" class="modal hidden">
+  <div class="modal-card">
+    <h3>Book Extra Session</h3>
+    <p id="selectedTimeText"></p>
+
+    <form id="bookingForm">
+      <input name="studentNumber" required placeholder="Student Number" />
+      <input name="email" type="email" required placeholder="Student Email" />
+
+      <select name="duration" required>
+        <option value="">Select duration</option>
+        <option value="30">30 minutes</option>
+        <option value="60">1 hour</option>
+        <option value="90">1.5 hours</option>
+        <option value="120">2 hours</option>
+      </select>
+
+      <textarea name="notes" required placeholder="What do you need help with?"></textarea>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+        <button type="button" class="btn btn-ghost" id="closeModal">Cancel</button>
+      </div>
+
+      <p id="bookingMsg"></p>
+    </form>
+  </div>
+</div>
+
+  
 </body>
 </html>
