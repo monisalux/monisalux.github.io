@@ -2,129 +2,181 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WeStudy Tutoring</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
+
+  <!-- Force-refresh to avoid GitHub cache issues -->
+  <link rel="stylesheet" href="./style.css?v=4">
+  <script defer src="./script.js?v=4"></script>
 </head>
+
 <body>
 
 <!-- HERO -->
 <header class="hero">
-  <h1>WeStudy</h1>
-  <p class="tagline">Personalized Tutoring for JK – Grade 12</p>
-  <p class="subtext">
-    Flexible • Supportive • Built Around Your Child
-  </p>
-  <button class="primary-btn" onclick="openTab('join', document.querySelector('.tab[data-tab=join]'))">
-    Get Started
-  </button>
+  <div class="hero-inner">
+
+    <!-- Logo + Mascot -->
+    <div class="top-bar">
+      <h1 class="logo">WeStudy</h1>
+
+      <!-- Mascot -->
+      <div class="mascot" aria-hidden="true">
+        <div class="face">
+          <span class="eye left"></span>
+          <span class="eye right"></span>
+          <span class="smile"></span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="hero-title">Learning that feels easier.</h2>
+    <p class="hero-sub">
+      Friendly university tutors • JK–Grade 12 • In-person & virtual • Flexible scheduling
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn btn-primary tablink" data-tab="join">Submit an Inquiry</button>
+      <button class="btn btn-ghost tablink" data-tab="resources">Explore Resources</button>
+    </div>
+
+  </div>
+
+  <!-- Wave -->
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path d="M0,80 C240,120 480,40 720,70 C960,100 1200,60 1440,90 L1440,120 L0,120 Z"></path>
+  </svg>
 </header>
 
 <!-- TABS -->
 <nav class="tabs">
-  <button class="tab active" data-tab="about" onclick="openTab('about', this)">About Us</button>
-  <button class="tab" data-tab="join" onclick="openTab('join', this)">Join Us</button>
-  <button class="tab" data-tab="resources" onclick="openTab('resources', this)">Resources</button>
+  <button class="tab active" data-tab="about">About Us</button>
+  <button class="tab" data-tab="join">Join Us</button>
+  <button class="tab" data-tab="resources">Resources</button>
 </nav>
+
+<main class="container">
 
 <!-- ABOUT -->
 <section id="about" class="tab-content active">
-  <h2>Who We Are</h2>
 
-  <p>
-    WeStudy is a student-centered tutoring service helping children from
-    <strong>Junior Kindergarten through Grade 12</strong> build confidence,
-    improve understanding, and succeed academically.
+  <h3>Who We Are</h3>
+  <p class="muted">
+    WeStudy is a student-focused tutoring service supporting children from
+    <strong>Junior Kindergarten to Grade 12</strong>.
   </p>
 
-  <p>
-    Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
-    <strong>10 university-level tutors</strong> who are passionate about teaching
-    and mentoring students across all subjects.
-  </p>
+  <div class="card-grid two">
+    <div class="card lift">
+      <h4>Our Story</h4>
+      <p>
+        Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
+        <strong>10 university-level tutors</strong> who are passionate about helping students succeed.
+      </p>
+      <p>
+        We tailor each session to the student’s learning style and are known for our
+        <strong>flexible scheduling</strong> for families.
+      </p>
+    </div>
 
-  <p>
-    We offer both <strong>in-person</strong> and <strong>virtual tutoring</strong>,
-    tailoring each session to the student’s learning style. Our flexible scheduling
-    and responsive communication make it easy for families to find what works best.
-  </p>
+    <div class="card lift">
+      <h4>What We Offer</h4>
+      <ul>
+        <li>All subjects (JK–12)</li>
+        <li>In-person & virtual tutoring</li>
+        <li>Homework & exam prep</li>
+        <li>Confidence-building support</li>
+      </ul>
+    </div>
+  </div>
 
-  <!-- TRUST STATS -->
+  <!-- STATS -->
   <div class="stats">
-    <div class="stat-card">
-      <h3>6+</h3>
-      <p>Years Experience</p>
-    </div>
-    <div class="stat-card">
-      <h3>10</h3>
-      <p>University Tutors</p>
-    </div>
-    <div class="stat-card">
-      <h3>JK–12</h3>
-      <p>All Grades</p>
-    </div>
+    <div class="stat lift"><span>6+</span>Years</div>
+    <div class="stat lift"><span>10</span>Tutors</div>
+    <div class="stat lift"><span>JK–12</span>Grades</div>
+    <div class="stat lift"><span>All</span>Subjects</div>
   </div>
 
   <!-- HOW IT WORKS -->
-  <h2>How It Works</h2>
-  <div class="steps-grid">
-    <div class="step-card">Submit an inquiry</div>
-    <div class="step-card">We match your child with a tutor</div>
-    <div class="step-card">Choose in-person or virtual</div>
-    <div class="step-card">Start learning with flexible scheduling</div>
+  <h3>How It Works</h3>
+  <div class="steps">
+    <div class="step lift">Submit an inquiry</div>
+    <div class="step lift">We match your child with a tutor</div>
+    <div class="step lift">Choose in-person or virtual</div>
+    <div class="step lift">Start learning flexibly</div>
   </div>
+
+  <!-- SERVICES -->
+  <h3>Services</h3>
+  <div class="service-grid">
+    <div class="card lift">📍 In-Person Tutoring</div>
+    <div class="card lift">💻 Virtual Tutoring</div>
+    <div class="card lift">📝 Homework Help</div>
+    <div class="card lift">🎯 Exam Prep</div>
+    <div class="card lift">🧠 Study Skills</div>
+    <div class="card lift">📚 All Subjects</div>
+  </div>
+
+  <!-- FAQ -->
+  <h3>FAQ</h3>
+  <div class="card-grid two">
+    <div class="card lift"><strong>Virtual tutoring?</strong><br>Yes — Google Classroom & Meet.</div>
+    <div class="card lift"><strong>Flexible schedules?</strong><br>Yes — we work around families.</div>
+    <div class="card lift"><strong>Ontario curriculum?</strong><br>We align with school learning.</div>
+    <div class="card lift"><strong>Response time?</strong><br>Within 24 hours.</div>
+  </div>
+
 </section>
 
 <!-- JOIN -->
 <section id="join" class="tab-content">
-  <h2>Join WeStudy</h2>
 
-  <p>
-    Interested in tutoring with us? Fill out the form below and we’ll contact you shortly.
-  </p>
+  <h3>Join WeStudy</h3>
+  <p class="muted">Fill this out and we’ll get back to you.</p>
 
-  <form class="join-form">
-    <input type="text" placeholder="Parent / Student Name" />
-    <input type="email" placeholder="Email" />
-    <input type="tel" placeholder="Phone Number" />
-    <input type="text" placeholder="Student Grade (e.g. Grade 7)" />
-    <input type="text" placeholder="Subject(s) Needed" />
-    <textarea placeholder="Availability (days & times)"></textarea>
-    <button type="submit" class="primary-btn">Submit Inquiry</button>
+  <form class="join-form" onsubmit="return fakeSubmit(event)">
+    <input required placeholder="Parent / Student Name">
+    <input required type="email" placeholder="Email">
+    <input placeholder="Phone Number">
+    <input required placeholder="Student Grade">
+    <input required placeholder="Subject(s)">
+    <textarea required placeholder="Availability"></textarea>
+    <button class="btn btn-primary">Submit Inquiry</button>
+    <p id="formMsg"></p>
   </form>
 
-  <!-- VIRTUAL WALKTHROUGH -->
-  <h2>How Virtual Tutoring Works</h2>
+  <h3>Virtual Tutoring Walkthrough</h3>
   <ol class="walkthrough">
-    <li>You’ll receive a Google Classroom invite link via email.</li>
-    <li>Click the link and sign in with a Google account.</li>
-    <li>Lesson materials and announcements are posted in Classroom.</li>
-    <li>Google Meet links are shared inside Classroom for live sessions.</li>
-    <li>Students join the session by clicking the Meet link at class time.</li>
+    <li>Receive a Google Classroom invite</li>
+    <li>Join using a Google account</li>
+    <li>Access materials & announcements</li>
+    <li>Join Google Meet sessions from Classroom</li>
   </ol>
+
 </section>
 
 <!-- RESOURCES -->
 <section id="resources" class="tab-content">
-  <h2>Learning Resources</h2>
-  <p>Helpful tools and websites recommended by WeStudy.</p>
 
-  <div class="card-grid">
-    <div class="subject-card math">Mathematics</div>
-    <div class="subject-card language">Language</div>
-    <div class="subject-card science">Science & Technology</div>
-    <div class="subject-card social">Social Studies</div>
-    <div class="subject-card arts">The Arts</div>
-    <div class="subject-card health">Health & Physical Education</div>
+  <h3>Learning Resources</h3>
+  <p class="muted">Organized by subject & grade.</p>
+
+  <div class="resource-grid">
+    <div class="subject lift">🧮 Math</div>
+    <div class="subject lift">📚 Language</div>
+    <div class="subject lift">🔬 Science</div>
+    <div class="subject lift">🌍 Social Studies</div>
+    <div class="subject lift">🎨 Arts</div>
+    <div class="subject lift">🏃 Health & PE</div>
   </div>
 
-  <p class="note">
-    Links will be added and organized by grade and subject.
-  </p>
 </section>
 
-<footer>
-  <p>© WeStudy Tutoring</p>
+</main>
+
+<footer class="footer">
+  © WeStudy Tutoring
 </footer>
 
 </body>
