@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const TEMPLATE_AUTOREPLY = "template_autoreply";
 
   /* ================= APPS SCRIPT (Stage 2.3) ================= */
-  const BOOKING_API_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; // from Apps Script deployment
+  const BOOKING_API_URL = "https://script.google.com/macros/s/AKfycbz9ma48LGKoYXHcu_EzFqOm7i4KKcNuKuWzTZPEsmxcwKSlqDmu6EVAY2moz_EMbSZtdg/exec"; // from Apps Script deployment
   const TZ = "America/Toronto";
 
   let emailReady = false;
