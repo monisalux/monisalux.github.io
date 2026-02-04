@@ -116,16 +116,20 @@
   <p class="muted">We’ll get back to you within 24 hours.</p>
 
   <form class="join-form" id="inquiryForm">
-    <input required placeholder="Parent / Student Name">
-    <input required type="email" placeholder="Email">
-    <input placeholder="Phone Number">
-    <input required placeholder="Student Grade">
-    <input required placeholder="Subject(s)">
-    <textarea required placeholder="Availability"></textarea>
+  <input name="name" required placeholder="Parent / Student Name">
+  <input name="email" required type="email" placeholder="Email">
+  <input name="phone" placeholder="Phone Number">
+  <input name="grade" required placeholder="Student Grade">
+  <input name="subjects" required placeholder="Subject(s)">
+  <textarea name="availability" required placeholder="Availability"></textarea>
 
-    <button class="btn btn-primary bounce">Submit Inquiry</button>
-    <p id="formMsg"></p>
-  </form>
+  <button class="btn btn-primary bounce" type="submit">
+    Submit Inquiry
+  </button>
+
+  <p id="formMsg"></p>
+</form>
+
 </section>
 
 <!-- ================= RESOURCES ================= -->
