@@ -184,6 +184,46 @@ body{
 .chevron{transition:transform .3s ease}
 .resource-card[data-open="true"] .chevron{transform:rotate(180deg)}
 
+/* ===== EXTRA SESSIONS CALENDAR ===== */
+#calendar {
+  margin-top: 20px;
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.fc {
+  font-family: Nunito, sans-serif;
+}
+
+.fc-toolbar-title {
+  font-weight: 800;
+}
+
+.fc-button {
+  background: var(--turq);
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 700;
+}
+
+.fc-button-primary:not(:disabled):hover {
+  background: var(--turq2);
+}
+
+.fc-timegrid-slot {
+  height: 48px;
+}
+
+.calendar-note {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+
 .confetti-container{
   position:fixed;
   inset:0;
