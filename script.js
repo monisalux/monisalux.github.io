@@ -98,7 +98,69 @@ document.addEventListener("DOMContentLoaded", () => {
       setMsg("❌ Failed to send. Please try again.");
     }
   });
+
+  /* ============ Extra Sessions Calendar (UI only) ============ */
+const calendarEl = document.getElementById("calendar");
+
+if (calendarEl) {
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + 14);
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: "timeGridWeek",
+    timeZone: "America/Toronto",
+    allDaySlot: false,
+    slotMinTime: "08:00:00",
+    slotMaxTime: "21:00:00",
+    nowIndicator: true,
+    height: "auto",
+
+    validRange: {
+      start: today,
+      end: maxDate
+    },
+
+    headerToolbar: {
+      left: "prev,next",
+      center: "title",
+      right: ""
+    },
+
+    events: [
+      // TEMP demo availability (we remove this in Stage 2.2)
+      {
+        title: "Available",
+        start: FullCalendar.formatDate(today, {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZone: "America/Toronto"
+        }),
+        end: FullCalendar.formatDate(today, {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZone: "America/Toronto"
+        }),
+        backgroundColor: "#2ec4b6"
+      }
+    ],
+
+    dateClick(info) {
+      // UI-only for now
+      if (info.date < today || info.date > maxDate) return;
+      alert(
+        "Booking will be enabled soon.\n\n" +
+        "Selected time:\n" +
+        info.date.toLocaleString("en-CA", { timeZone: "America/Toronto" })
+      );
+    }
+  });
+
+  calendar.render();
+}
+
 });
+
 
 /* ============ Confetti ============ */
 function launchConfetti() {
