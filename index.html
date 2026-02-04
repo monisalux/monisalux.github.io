@@ -1,156 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>WeStudy Tutoring</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
 
-<header>
+<!-- HERO -->
+<header class="hero">
   <h1>WeStudy</h1>
-  <p>Personalized Tutoring | JK – Grade 12</p>
+  <p class="tagline">Personalized Tutoring for JK – Grade 12</p>
+  <p class="subtext">
+    Flexible • Supportive • Built Around Your Child
+  </p>
+  <button class="primary-btn" onclick="openTab('join', document.querySelector('.tab[data-tab=join]'))">
+    Get Started
+  </button>
 </header>
 
+<!-- TABS -->
 <nav class="tabs">
-  <button class="tab active" onclick="openTab('about', this)">About Us</button>
-  <button class="tab" onclick="openTab('join', this)">Join Us</button>
-  <button class="tab" onclick="openTab('resources', this)">Resources</button>
+  <button class="tab active" data-tab="about" onclick="openTab('about', this)">About Us</button>
+  <button class="tab" data-tab="join" onclick="openTab('join', this)">Join Us</button>
+  <button class="tab" data-tab="resources" onclick="openTab('resources', this)">Resources</button>
 </nav>
 
 <!-- ABOUT -->
 <section id="about" class="tab-content active">
-  <h2>About Us</h2>
+  <h2>Who We Are</h2>
+
   <p>
-    WeStudy is a student-focused tutoring service dedicated to helping children
-    from Junior Kindergarten through Grade 12 succeed academically and build confidence.
+    WeStudy is a student-centered tutoring service helping children from
+    <strong>Junior Kindergarten through Grade 12</strong> build confidence,
+    improve understanding, and succeed academically.
   </p>
+
   <p>
     Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
-    <strong>10 university-level tutors</strong> who are passionate about education
-    and mentoring students at every stage of their learning journey.
+    <strong>10 university-level tutors</strong> who are passionate about teaching
+    and mentoring students across all subjects.
   </p>
+
   <p>
-    We offer support in <strong>all subjects</strong> and provide both
-    <strong>in-person</strong> and <strong>virtual tutoring</strong>.
-    Our approach is flexible and personalized — we adapt to each student’s learning
-    style and work closely with families to create schedules that fit their needs.
+    We offer both <strong>in-person</strong> and <strong>virtual tutoring</strong>,
+    tailoring each session to the student’s learning style. Our flexible scheduling
+    and responsive communication make it easy for families to find what works best.
   </p>
-  <p>
-    Parents choose WeStudy for our <strong>flexible hours</strong>,
-    responsive communication, and our commitment to making learning effective,
-    supportive, and stress-free.
-  </p>
+
+  <!-- TRUST STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <h3>6+</h3>
+      <p>Years Experience</p>
+    </div>
+    <div class="stat-card">
+      <h3>10</h3>
+      <p>University Tutors</p>
+    </div>
+    <div class="stat-card">
+      <h3>JK–12</h3>
+      <p>All Grades</p>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <h2>How It Works</h2>
+  <div class="steps-grid">
+    <div class="step-card">Submit an inquiry</div>
+    <div class="step-card">We match your child with a tutor</div>
+    <div class="step-card">Choose in-person or virtual</div>
+    <div class="step-card">Start learning with flexible scheduling</div>
+  </div>
 </section>
 
-<!-- JOIN US -->
+<!-- JOIN -->
 <section id="join" class="tab-content">
   <h2>Join WeStudy</h2>
 
   <p>
-    Interested in tutoring with us? Fill out the form below and we’ll get back to you shortly.
+    Interested in tutoring with us? Fill out the form below and we’ll contact you shortly.
   </p>
 
   <form class="join-form">
-    <label>
-      Parent / Student Name
-      <input type="text" placeholder="Full Name">
-    </label>
-
-    <label>
-      Email
-      <input type="email" placeholder="example@email.com">
-    </label>
-
-    <label>
-      Phone Number
-      <input type="tel" placeholder="123-456-7890">
-    </label>
-
-    <label>
-      Student Grade
-      <input type="text" placeholder="e.g. Grade 6">
-    </label>
-
-    <label>
-      Subject(s) Needed
-      <input type="text" placeholder="Math, Science, English">
-    </label>
-
-    <label>
-      Availability (Days & Times)
-      <textarea placeholder="e.g. Mondays & Wednesdays after 5pm"></textarea>
-    </label>
-
-    <button type="submit">Submit Inquiry</button>
+    <input type="text" placeholder="Parent / Student Name" />
+    <input type="email" placeholder="Email" />
+    <input type="tel" placeholder="Phone Number" />
+    <input type="text" placeholder="Student Grade (e.g. Grade 7)" />
+    <input type="text" placeholder="Subject(s) Needed" />
+    <textarea placeholder="Availability (days & times)"></textarea>
+    <button type="submit" class="primary-btn">Submit Inquiry</button>
   </form>
 
-  <hr>
-
-  <h3>How Virtual Classes Work</h3>
-
-  <ol class="steps">
-    <li>
-      After registration, students will receive a
-      <strong>Google Classroom invite link</strong> via email.
-    </li>
-    <li>
-      Click the link and sign in using a Google account to join the class.
-    </li>
-    <li>
-      All lesson materials, announcements, and assignments will be posted in
-      Google Classroom.
-    </li>
-    <li>
-      For virtual sessions, tutors will post a
-      <strong>Google Meet link</strong> directly inside the Classroom.
-    </li>
-    <li>
-      At the scheduled time, students simply click the Meet link to join the live session.
-    </li>
+  <!-- VIRTUAL WALKTHROUGH -->
+  <h2>How Virtual Tutoring Works</h2>
+  <ol class="walkthrough">
+    <li>You’ll receive a Google Classroom invite link via email.</li>
+    <li>Click the link and sign in with a Google account.</li>
+    <li>Lesson materials and announcements are posted in Classroom.</li>
+    <li>Google Meet links are shared inside Classroom for live sessions.</li>
+    <li>Students join the session by clicking the Meet link at class time.</li>
   </ol>
-
-  <p class="note">
-    No additional software is required — everything runs through Google Classroom and Google Meet.
-  </p>
 </section>
 
 <!-- RESOURCES -->
 <section id="resources" class="tab-content">
-  <h2>Student Resources</h2>
+  <h2>Learning Resources</h2>
+  <p>Helpful tools and websites recommended by WeStudy.</p>
 
-  <p>
-    Below are helpful learning resources organized by grade level and subject.
-    We regularly update this section with practice materials, videos, and study tools.
+  <div class="card-grid">
+    <div class="subject-card math">Mathematics</div>
+    <div class="subject-card language">Language</div>
+    <div class="subject-card science">Science & Technology</div>
+    <div class="subject-card social">Social Studies</div>
+    <div class="subject-card arts">The Arts</div>
+    <div class="subject-card health">Health & Physical Education</div>
+  </div>
+
+  <p class="note">
+    Links will be added and organized by grade and subject.
   </p>
-
-  <div class="resource-group">
-    <h3>Grades JK – 5</h3>
-    <ul>
-      <li><a href="#">Math Games & Practice</a></li>
-      <li><a href="#">Reading & Phonics</a></li>
-      <li><a href="#">Science Basics</a></li>
-    </ul>
-  </div>
-
-  <div class="resource-group">
-    <h3>Grades 6 – 8</h3>
-    <ul>
-      <li><a href="#">Math Practice</a></li>
-      <li><a href="#">Grammar & Writing</a></li>
-      <li><a href="#">Science & Geography</a></li>
-    </ul>
-  </div>
-
-  <div class="resource-group">
-    <h3>Grades 9 – 12</h3>
-    <ul>
-      <li><a href="#">High School Math</a></li>
-      <li><a href="#">Biology, Chemistry & Physics</a></li>
-      <li><a href="#">Exam Prep & Study Skills</a></li>
-    </ul>
-  </div>
 </section>
 
 <footer>
