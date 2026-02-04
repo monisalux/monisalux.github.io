@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ================= EMAILJS CONFIG ================= */
   const EMAILJS_PUBLIC_KEY = "z01UAn-dERFLYMxUV";
   const EMAILJS_SERVICE_ID = "service_ajfd3oo";
   const TEMPLATE_TO_YOU = "westudy_inquiry";
@@ -7,7 +8,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let emailReady = false;
 
-  /* ============ Tabs ============ */
+  /* ================= LOAD EMAILJS ================= */
+  const emailJsScript = document.createElement("script");
+  emailJsScript.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+  document.body.appendChild(emailJsScript);
+
+  emailJsScript.onload = () => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailReady = true;
+    console.log("EmailJS ready");
+  };
+
+  /* ================= TABS ================= */
   function setTab(tabId) {
     document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -24,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => setTab(btn.dataset.tab));
   });
 
-  /* ============ Expandable resources ============ */
+  /* ================= EXPANDABLE RESOURCES ================= */
   document.addEventListener("click", (e) => {
     const header = e.target.closest(".resource-header");
     if (!header) return;
@@ -35,74 +47,51 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  /* ============ Load EmailJS ============ */
-  const emailJsScript = document.createElement("script");
-  emailJsScript.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
-  document.body.appendChild(emailJsScript);
+  /* ================= INQUIRY FORM ================= */
+  const inquiryForm = document.getElementById("inquiryForm");
+  const inquiryMsg = document.getElementById("formMsg");
 
-  emailJsScript.onload = () => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    emailReady = true;
-    console.log("EmailJS ready");
-  };
-
-  /* ============ Inquiry Form ============ */
-  const form = document.getElementById("inquiryForm");
-  const msg = document.getElementById("formMsg");
-
-  function setMsg(text) {
-    if (msg) msg.textContent = text;
-  }
-
-  function getValue(name) {
-    const el = form.querySelector(`[name="${name}"]`);
-    return (el?.value || "").trim();
-  }
-
-  form.addEventListener("submit", async (e) => {
+  inquiryForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     if (!emailReady) {
-      setMsg("❌ Email service not ready. Please try again.");
+      inquiryMsg.textContent = "❌ Email service not ready. Try again.";
       return;
     }
 
     const payload = {
-      name: getValue("name"),
-      email: getValue("email"),
-      phone: getValue("phone"),
-      grade: getValue("grade"),
-      subjects: getValue("subjects"),
-      availability: getValue("availability"),
-      reply_to: getValue("email"),
+      name: inquiryForm.name.value.trim(),
+      email: inquiryForm.email.value.trim(),
+      phone: inquiryForm.phone.value.trim(),
+      grade: inquiryForm.grade.value.trim(),
+      subjects: inquiryForm.subjects.value.trim(),
+      availability: inquiryForm.availability.value.trim(),
+      reply_to: inquiryForm.email.value.trim(),
       timestamp: new Date().toLocaleString()
     };
 
     if (!payload.name || !payload.email || !payload.grade || !payload.subjects || !payload.availability) {
-      setMsg("❌ Please fill in all required fields.");
+      inquiryMsg.textContent = "❌ Please fill in all required fields.";
       return;
     }
 
-    setMsg("Sending…");
+    inquiryMsg.textContent = "Sending…";
 
     try {
       await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_TO_YOU, payload);
       await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_AUTOREPLY, payload);
-
       launchConfetti();
-      setMsg("🎉 Inquiry sent! We’ll contact you within 24 hours.");
-      form.reset();
-
+      inquiryMsg.textContent = "🎉 Inquiry sent! We’ll contact you within 24 hours.";
+      inquiryForm.reset();
     } catch (err) {
-      console.error("EmailJS error:", err);
-      setMsg("❌ Failed to send. Please try again.");
+      console.error(err);
+      inquiryMsg.textContent = "❌ Something went wrong.";
     }
   });
 
-  /* ============ Extra Sessions Calendar (UI only) ============ */
-const calendarEl = document.getElementById("calendar");
+  /* ================= EXTRA SESSIONS CALENDAR ================= */
+  const calendarEl = document.getElementById("calendar");
+  if (!calendarEl || typeof FullCalendar === "undefined") return;
 
-if (calendarEl) {
   const today = new Date();
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + 14);
@@ -115,54 +104,114 @@ if (calendarEl) {
     slotMaxTime: "21:00:00",
     nowIndicator: true,
     height: "auto",
-
-    validRange: {
-      start: today,
-      end: maxDate
-    },
-
+    validRange: { start: today, end: maxDate },
     headerToolbar: {
       left: "prev,next",
       center: "title",
       right: ""
-    },
-
-    events: [
-      // TEMP demo availability (we remove this in Stage 2.2)
-      {
-        title: "Available",
-        start: FullCalendar.formatDate(today, {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: "America/Toronto"
-        }),
-        end: FullCalendar.formatDate(today, {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: "America/Toronto"
-        }),
-        backgroundColor: "#2ec4b6"
-      }
-    ],
-
-    dateClick(info) {
-      // UI-only for now
-      if (info.date < today || info.date > maxDate) return;
-      alert(
-        "Booking will be enabled soon.\n\n" +
-        "Selected time:\n" +
-        info.date.toLocaleString("en-CA", { timeZone: "America/Toronto" })
-      );
     }
   });
 
   calendar.render();
-}
+
+  /* ===== DEMO AVAILABILITY ===== */
+  const demoSlots = [
+    { days: 1, time: "16:00" },
+    { days: 2, time: "17:00" },
+    { days: 3, time: "15:30" }
+  ];
+
+  demoSlots.forEach(slot => {
+    const d = new Date();
+    d.setDate(d.getDate() + slot.days);
+    const [h, m] = slot.time.split(":");
+    d.setHours(h, m, 0, 0);
+
+    calendar.addEvent({
+      title: "Available",
+      start: d,
+      end: new Date(d.getTime() + 60 * 60000),
+      className: "available"
+    });
+  });
+
+  /* ================= BOOKING MODAL ================= */
+  const modal = document.getElementById("bookingModal");
+  const closeModal = document.getElementById("closeModal");
+  const bookingForm = document.getElementById("bookingForm");
+  const bookingMsg = document.getElementById("bookingMsg");
+  const selectedTimeText = document.getElementById("selectedTimeText");
+
+  let selectedEvent = null;
+  const activeBookings = [];
+
+  closeModal.onclick = () => modal.classList.add("hidden");
+
+  calendar.on("eventClick", (info) => {
+    if (!info.event.classNames.includes("available")) return;
+
+    selectedEvent = info.event;
+    selectedTimeText.textContent =
+      "Selected time: " +
+      info.event.start.toLocaleString("en-CA", { timeZone: "America/Toronto" });
+
+    bookingForm.reset();
+    bookingMsg.textContent = "";
+    modal.classList.remove("hidden");
+  });
+
+  bookingForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const studentNumber = bookingForm.studentNumber.value.trim();
+    const email = bookingForm.email.value.trim();
+    const duration = Number(bookingForm.duration.value);
+    const notes = bookingForm.notes.value.trim();
+
+    if (!studentNumber || !email || !duration || !notes) {
+      bookingMsg.textContent = "❌ Please complete all fields.";
+      return;
+    }
+
+    if (activeBookings.some(b => b.studentNumber === studentNumber)) {
+      bookingMsg.textContent = "❌ You already have an active booking.";
+      return;
+    }
+
+    selectedEvent.remove();
+    calendar.addEvent({
+      title: "Booked",
+      start: selectedEvent.start,
+      end: new Date(selectedEvent.start.getTime() + duration * 60000),
+      className: "booked"
+    });
+
+    activeBookings.push({ studentNumber, email });
+
+    if (emailReady) {
+      try {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          TEMPLATE_AUTOREPLY,
+          {
+            name: "Student",
+            reply_to: email,
+            subjects: notes
+          }
+        );
+      } catch (err) {
+        console.error("Confirmation email failed", err);
+      }
+    }
+
+    launchConfetti();
+    modal.classList.add("hidden");
+    alert("🎉 Booking confirmed! A confirmation email has been sent.");
+  });
 
 });
 
-
-/* ============ Confetti ============ */
+/* ================= CONFETTI ================= */
 function launchConfetti() {
   const container = document.createElement("div");
   container.className = "confetti-container";
