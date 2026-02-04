@@ -1,156 +1,59 @@
-* {
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;600;800&display=swap');
+
+:root{
+  --turq:#2ec4b6;
+  --turq2:#3ccfcf;
+  --bg:#f6fffe;
+  --dark:#0f172a;
 }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f7fbfb;
-  color: #0f172a;
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Nunito, sans-serif;
+  background:var(--bg);
+  color:var(--dark);
 }
 
 /* HERO */
-.hero {
-  text-align: center;
-  padding: 70px 20px;
-  background: linear-gradient(135deg, #2ec4b6, #3ccfcf);
-  color: white;
+.hero{
+  background:linear-gradient(135deg,var(--turq),var(--turq2));
+  color:white;
+  position:relative;
+}
+.hero-inner{
+  max-width:1100px;
+  margin:auto;
+  padding:50px 20px 80px;
+}
+.logo{
+  font-family:Fredoka;
+  font-size:2.4rem;
+}
+.hero-title{
+  font-size:2.4rem;
+  margin:20px 0 10px;
+}
+.hero-sub{max-width:700px}
+
+.hero-actions{display:flex;gap:12px;margin-top:20px}
+
+.wave{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  fill:var(--bg);
 }
 
-.hero h1 {
-  font-size: 3rem;
+/* MASCOT */
+.mascot{
+  width:48px;height:48px;
+  background:rgba(255,255,255,.25);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:float 3s ease-in-out infinite;
 }
-
-.tagline {
-  font-size: 1.4rem;
-  margin-top: 10px;
-}
-
-.subtext {
-  opacity: 0.9;
-  margin-bottom: 25px;
-}
-
-/* BUTTON */
-.primary-btn {
-  background: white;
-  color: #0f766e;
-  border: none;
-  padding: 14px 26px;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-/* TABS */
-.tabs {
-  display: flex;
-  justify-content: center;
-  background: white;
-  border-bottom: 1px solid #ddd;
-}
-
-.tab {
-  padding: 15px 25px;
-  border: none;
-  background: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.tab.active {
-  border-bottom: 4px solid #2ec4b6;
-  font-weight: bold;
-}
-
-/* CONTENT */
-.tab-content {
-  display: none;
-  max-width: 1000px;
-  margin: auto;
-  padding: 40px 20px;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-/* STATS */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin: 30px 0;
-}
-
-.stat-card {
-  background: white;
-  padding: 20px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-}
-
-/* STEPS */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.step-card {
-  background: #e6fffa;
-  padding: 20px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-/* FORM */
-.join-form {
-  max-width: 500px;
-  display: grid;
-  gap: 12px;
-}
-
-.join-form input,
-.join-form textarea {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-/* WALKTHROUGH */
-.walkthrough li {
-  margin-bottom: 10px;
-}
-
-/* RESOURCES */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.subject-card {
-  background: white;
-  padding: 40px 20px;
-  border-radius: 18px;
-  text-align: center;
-  font-weight: bold;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-}
-
-/* SUBJECT COLORS */
-.math { background: #e0f2fe; }
-.language { background: #fff7ed; }
-.science { background: #ecfeff; }
-.social { background: #f0fdf4; }
-.arts { background: #fdf2f8; }
-.health { background: #fefce8; }
-
-footer {
-  text-align: center;
-  padding: 25px;
-  background: #e6fffa;
-}
+.face
