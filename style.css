@@ -56,4 +56,94 @@ body{
   justify-content:center;
   animation:float 3s ease-in-out infinite;
 }
-.face
+.face{position:relative}
+.eye{
+  width:6px;height:6px;
+  background:#0f172a;
+  border-radius:50%;
+  position:absolute;
+  top:6px;
+}
+.eye.left{left:-8px}
+.eye.right{right:-8px}
+.smile{
+  width:14px;height:6px;
+  border-bottom:2px solid #0f172a;
+  border-radius:0 0 10px 10px;
+  margin-top:14px;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+
+/* TABS */
+.tabs{
+  display:flex;
+  justify-content:center;
+  background:white;
+  position:sticky;
+  top:0;
+}
+.tab{
+  padding:14px 20px;
+  border:none;
+  background:none;
+  font-weight:800;
+  cursor:pointer;
+}
+.tab.active{border-bottom:4px solid var(--turq)}
+
+/* CONTENT */
+.container{max-width:1100px;margin:auto;padding:30px 20px}
+.tab-content{display:none;animation:fade .3s ease}
+.tab-content.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+
+/* CARDS */
+.card{
+  background:white;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.lift:hover{transform:translateY(-4px)}
+.card-grid{display:grid;gap:16px}
+.card-grid.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px;margin:30px 0}
+.stat{background:#e6fffa;border-radius:14px;padding:14px;text-align:center;font-weight:800}
+.stat span{display:block;font-size:1.6rem}
+
+/* STEPS */
+.steps,.service-grid,.resource-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;
+}
+.step,.subject{text-align:center;font-weight:800;padding:18px;background:#e6fffa;border-radius:18px}
+
+/* FORM */
+.join-form{max-width:500px;display:grid;gap:12px}
+.join-form input,.join-form textarea{
+  padding:12px;border-radius:12px;border:1px solid #ccc
+}
+
+/* BUTTONS */
+.btn{
+  padding:12px 20px;
+  border-radius:999px;
+  border:none;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn-primary{background:white;color:#0f766e}
+.btn-ghost{background:rgba(255,255,255,.2);color:white}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:20px;
+  background:#e6fffa;
+}
