@@ -119,11 +119,28 @@ document.addEventListener("DOMContentLoaded", () => {
     return d;
   }
 
-  const demoSlots = [
-    { start: makeETDate(1, 16, 0), length: 60 },
-    { start: makeETDate(2, 17, 0), length: 90 },
-    { start: makeETDate(3, 15, 30), length: 120 }
-  ];
+  function nextWeekday(dayIndex, hour, minute) {
+  const d = new Date();
+  const diff = (dayIndex + 7 - d.getDay()) % 7 || 7;
+  d.setDate(d.getDate() + diff);
+  d.setHours(hour, minute, 0, 0);
+  return d;
+}
+
+const demoSlots = [
+  // Wed
+  { start: nextWeekday(3, 16, 0), length: 60 },
+  { start: nextWeekday(3, 18, 0), length: 90 },
+
+  // Thu
+  { start: nextWeekday(4, 15, 30), length: 60 },
+
+  // Fri
+  { start: nextWeekday(5, 16, 0), length: 120 },
+
+  // Sat
+  { start: nextWeekday(6, 8, 30), length: 120 }
+];
 
   demoSlots.forEach(slot => {
     window.extraSessionsCalendar.addEvent({
