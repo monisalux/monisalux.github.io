@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const TEMPLATE_AUTOREPLY = "template_autoreply";
 
   /* ================= APPS SCRIPT (Stage 2.3) ================= */
-  const BOOKING_API_URL = "https://script.google.com/macros/s/AKfycbxQ2rCcq-3s5LvS_1PPi9Rf8f0ty0mOyJqrLgTvg_psqfPQaYZDk-_xVOd4qPQmxdZh/exec"; // from Apps Script deployment
+  const BOOKING_API_URL = "https://script.google.com/macros/s/AKfycbwy9uoluq7eThI-zCF2RIdJSma4mCg2wdeDDaRNOSSoc1gXsbJbH9K35cutmMQwCDM/exec"; // from Apps Script deployment
   const TZ = "America/Toronto";
 
   let emailReady = false;
