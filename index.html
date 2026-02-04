@@ -2,37 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your Name | Tutoring</title>
+  <title>WeStudy Tutoring</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 <body>
 
-  <header>
-    <h1>Your Name</h1>
-    <p>Math & Science Tutoring (Grades 4–12)</p>
-  </header>
+<header>
+  <h1>WeStudy</h1>
+  <p>Personalized Tutoring | JK – Grade 12</p>
+</header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>
-      I offer one-on-one tutoring for students in grades 4–12,
-      focusing on math, science, and exam preparation.
-    </p>
-  </section>
+<nav class="tabs">
+  <button class="tab active" onclick="openTab('about')">About Us</button>
+  <button class="tab" onclick="openTab('join')">Join Us</button>
+  <button class="tab" onclick="openTab('resources')">Resources</button>
+</nav>
 
-  <section>
-    <h2>Subjects</h2>
+<!-- ABOUT -->
+<section id="about" class="tab-content active">
+  <h2>About Us</h2>
+  <p>
+    WeStudy is a student-focused tutoring service dedicated to helping children
+    from Junior Kindergarten through Grade 12 succeed academically and build confidence.
+  </p>
+  <p>
+    Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
+    <strong>10 university-level tutors</strong> who are passionate about education
+    and mentoring students at every stage of their learning journey.
+  </p>
+  <p>
+    We offer support in <strong>all subjects</strong> and provide both
+    <strong>in-person</strong> and <strong>virtual tutoring</strong>.
+    Our approach is flexible and personalized — we adapt to each student’s learning
+    style and work closely with families to create schedules that fit their needs.
+  </p>
+  <p>
+    Parents choose WeStudy for our <strong>flexible hours</strong>,
+    responsive communication, and our commitment to making learning effective,
+    supportive, and stress-free.
+  </p>
+</section>
+
+<!-- JOIN US -->
+<section id="join" class="tab-content">
+  <h2>Join WeStudy</h2>
+
+  <p>
+    Interested in tutoring with us? Fill out the form below and we’ll get back to you shortly.
+  </p>
+
+  <form class="join-form">
+    <label>
+      Parent / Student Name
+      <input type="text" placeholder="Full Name">
+    </label>
+
+    <label>
+      Email
+      <input type="email" placeholder="example@email.com">
+    </label>
+
+    <label>
+      Phone Number
+      <input type="tel" placeholder="123-456-7890">
+    </label>
+
+    <label>
+      Student Grade
+      <input type="text" placeholder="e.g. Grade 6">
+    </label>
+
+    <label>
+      Subject(s) Needed
+      <input type="text" placeholder="Math, Science, English">
+    </label>
+
+    <label>
+      Availability (Days & Times)
+      <textarea placeholder="e.g. Mondays & Wednesdays after 5pm"></textarea>
+    </label>
+
+    <button type="submit">Submit Inquiry</button>
+  </form>
+
+  <hr>
+
+  <h3>How Virtual Classes Work</h3>
+
+  <ol class="steps">
+    <li>
+      After registration, students will receive a
+      <strong>Google Classroom invite link</strong> via email.
+    </li>
+    <li>
+      Click the link and sign in using a Google account to join the class.
+    </li>
+    <li>
+      All lesson materials, announcements, and assignments will be posted in
+      Google Classroom.
+    </li>
+    <li>
+      For virtual sessions, tutors will post a
+      <strong>Google Meet link</strong> directly inside the Classroom.
+    </li>
+    <li>
+      At the scheduled time, students simply click the Meet link to join the live session.
+    </li>
+  </ol>
+
+  <p class="note">
+    No additional software is required — everything runs through Google Classroom and Google Meet.
+  </p>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources" class="tab-content">
+  <h2>Student Resources</h2>
+
+  <p>
+    Below are helpful learning resources organized by grade level and subject.
+    We regularly update this section with practice materials, videos, and study tools.
+  </p>
+
+  <div class="resource-group">
+    <h3>Grades JK – 5</h3>
     <ul>
-      <li>Math (Grades 4–12)</li>
-      <li>Science</li>
-      <li>Exam Prep</li>
+      <li><a href="#">Math Games & Practice</a></li>
+      <li><a href="#">Reading & Phonics</a></li>
+      <li><a href="#">Science Basics</a></li>
     </ul>
-  </section>
+  </div>
 
-  <section>
-    <h2>Contact</h2>
-    <p>Email: your@email.com</p>
-  </section>
+  <div class="resource-group">
+    <h3>Grades 6 – 8</h3>
+    <ul>
+      <li><a href="#">Math Practice</a></li>
+      <li><a href="#">Grammar & Writing</a></li>
+      <li><a href="#">Science & Geography</a></li>
+    </ul>
+  </div>
+
+  <div class="resource-group">
+    <h3>Grades 9 – 12</h3>
+    <ul>
+      <li><a href="#">High School Math</a></li>
+      <li><a href="#">Biology, Chemistry & Physics</a></li>
+      <li><a href="#">Exam Prep & Study Skills</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>© WeStudy Tutoring</p>
+</footer>
 
 </body>
 </html>
