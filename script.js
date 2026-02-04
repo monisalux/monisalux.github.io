@@ -1,53 +1,55 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  function setActiveTab(tabId) {
-    // Hide all panels
-    document.querySelectorAll(".tab-content").forEach(panel => {
-      panel.classList.remove("active");
-    });
+  function setTab(tabId){
+    document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
 
-    // Deactivate all tabs
-    document.querySelectorAll(".tab").forEach(tab => {
-      tab.classList.remove("active");
-    });
+    document.getElementById(tabId).classList.add("active");
+    document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add("active");
 
-    // Activate selected panel
-    const panel = document.getElementById(tabId);
-    if (panel) panel.classList.add("active");
-
-    // Activate selected tab
-    const tabButton = document.querySelector(`.tab[data-tab="${tabId}"]`);
-    if (tabButton) tabButton.classList.add("active");
-
-    // Scroll to top smoothly
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // Top tab bar clicks
-  document.querySelectorAll(".tab").forEach(button => {
-    button.addEventListener("click", () => {
-      const tabId = button.dataset.tab;
-      setActiveTab(tabId);
+  document.querySelectorAll(".tab, .tablink").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setTab(btn.dataset.tab);
     });
   });
 
-  // Hero buttons that jump to tabs
-  document.querySelectorAll(".tablink").forEach(button => {
-    button.addEventListener("click", () => {
-      const tabId = button.dataset.tab;
-      setActiveTab(tabId);
-    });
+  // Expandable resources (robust)
+  document.addEventListener("click", (e) => {
+    const header = e.target.closest(".resource-header");
+    if (!header) return;
+
+    const card = header.parentElement;
+    const isOpen = card.getAttribute("data-open") === "true";
+    card.setAttribute("data-open", String(!isOpen));
   });
 
-  // Fake submit handler (front-end only)
-  window.fakeSubmit = function (e) {
+  // Form submit + confetti
+  const form = document.getElementById("inquiryForm");
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const msg = document.getElementById("formMsg");
-    if (msg) {
-      msg.textContent = "✅ Inquiry submitted! We’ll contact you soon.";
-    }
-    e.target.reset();
-    return false;
-  };
+    launchConfetti();
+    document.getElementById("formMsg").textContent =
+      "🎉 Inquiry submitted! We’ll contact you soon.";
+    form.reset();
+  });
 
 });
+
+function launchConfetti(){
+  const container = document.createElement("div");
+  container.className = "confetti-container";
+  document.body.appendChild(container);
+
+  for(let i=0;i<40;i++){
+    const piece=document.createElement("span");
+    piece.className="confetti";
+    piece.style.left=Math.random()*100+"vw";
+    piece.style.backgroundColor=`hsl(${Math.random()*360},100%,70%)`;
+    container.appendChild(piece);
+  }
+
+  setTimeout(()=>container.remove(),1200);
+}
