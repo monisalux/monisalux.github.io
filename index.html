@@ -5,29 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WeStudy Tutoring</title>
 
-  <!-- Force-refresh to avoid GitHub cache issues -->
-  <link rel="stylesheet" href="./style.css?v=4">
-  <script defer src="./script.js?v=4"></script>
+  <!-- Cache-buster so styles ALWAYS load -->
+  <link rel="stylesheet" href="style.css?v=7" />
+  <script defer src="script.js?v=7"></script>
 </head>
 
 <body>
 
-<!-- HERO -->
+<!-- HERO / HEADER -->
 <header class="hero">
   <div class="hero-inner">
 
-    <!-- Logo + Mascot -->
+    <!-- TOP BAR -->
     <div class="top-bar">
       <h1 class="logo">WeStudy</h1>
 
       <!-- Mascot -->
-      <div class="mascot" aria-hidden="true">
+      <div class="mascot" title="Hi!">
         <div class="face">
           <span class="eye left"></span>
           <span class="eye right"></span>
           <span class="smile"></span>
         </div>
       </div>
+
+      <!-- Top-right CTA -->
+      <button class="btn btn-outline tablink" data-tab="join">
+        Submit Inquiry
+      </button>
     </div>
 
     <h2 class="hero-title">Learning that feels easier.</h2>
@@ -36,8 +41,8 @@
     </p>
 
     <div class="hero-actions">
-      <button class="btn btn-primary tablink" data-tab="join">Submit an Inquiry</button>
-      <button class="btn btn-ghost tablink" data-tab="resources">Explore Resources</button>
+      <button class="btn btn-primary tablink" data-tab="join">Get Started</button>
+      <button class="btn btn-ghost tablink" data-tab="resources">Resources</button>
     </div>
 
   </div>
@@ -59,11 +64,10 @@
 
 <!-- ABOUT -->
 <section id="about" class="tab-content active">
-
   <h3>Who We Are</h3>
   <p class="muted">
     WeStudy is a student-focused tutoring service supporting children from
-    <strong>Junior Kindergarten to Grade 12</strong>.
+    Junior Kindergarten through Grade 12.
   </p>
 
   <div class="card-grid two">
@@ -71,10 +75,10 @@
       <h4>Our Story</h4>
       <p>
         Founded over <strong>6 years ago</strong>, WeStudy has grown into a team of
-        <strong>10 university-level tutors</strong> who are passionate about helping students succeed.
+        <strong>10 university-level tutors</strong>.
       </p>
       <p>
-        We tailor each session to the student’s learning style and are known for our
+        We personalize learning and are known for our
         <strong>flexible scheduling</strong> for families.
       </p>
     </div>
@@ -97,80 +101,54 @@
     <div class="stat lift"><span>JK–12</span>Grades</div>
     <div class="stat lift"><span>All</span>Subjects</div>
   </div>
-
-  <!-- HOW IT WORKS -->
-  <h3>How It Works</h3>
-  <div class="steps">
-    <div class="step lift">Submit an inquiry</div>
-    <div class="step lift">We match your child with a tutor</div>
-    <div class="step lift">Choose in-person or virtual</div>
-    <div class="step lift">Start learning flexibly</div>
-  </div>
-
-  <!-- SERVICES -->
-  <h3>Services</h3>
-  <div class="service-grid">
-    <div class="card lift">📍 In-Person Tutoring</div>
-    <div class="card lift">💻 Virtual Tutoring</div>
-    <div class="card lift">📝 Homework Help</div>
-    <div class="card lift">🎯 Exam Prep</div>
-    <div class="card lift">🧠 Study Skills</div>
-    <div class="card lift">📚 All Subjects</div>
-  </div>
-
-  <!-- FAQ -->
-  <h3>FAQ</h3>
-  <div class="card-grid two">
-    <div class="card lift"><strong>Virtual tutoring?</strong><br>Yes — Google Classroom & Meet.</div>
-    <div class="card lift"><strong>Flexible schedules?</strong><br>Yes — we work around families.</div>
-    <div class="card lift"><strong>Ontario curriculum?</strong><br>We align with school learning.</div>
-    <div class="card lift"><strong>Response time?</strong><br>Within 24 hours.</div>
-  </div>
-
 </section>
 
 <!-- JOIN -->
 <section id="join" class="tab-content">
+  <h3>Submit an Inquiry</h3>
+  <p class="muted">We’ll get back to you within 24 hours.</p>
 
-  <h3>Join WeStudy</h3>
-  <p class="muted">Fill this out and we’ll get back to you.</p>
-
-  <form class="join-form" onsubmit="return fakeSubmit(event)">
+  <form class="join-form" onsubmit="return submitForm(event)">
     <input required placeholder="Parent / Student Name">
     <input required type="email" placeholder="Email">
     <input placeholder="Phone Number">
     <input required placeholder="Student Grade">
     <input required placeholder="Subject(s)">
     <textarea required placeholder="Availability"></textarea>
-    <button class="btn btn-primary">Submit Inquiry</button>
+    <button class="btn btn-primary bounce">Submit Inquiry</button>
     <p id="formMsg"></p>
   </form>
-
-  <h3>Virtual Tutoring Walkthrough</h3>
-  <ol class="walkthrough">
-    <li>Receive a Google Classroom invite</li>
-    <li>Join using a Google account</li>
-    <li>Access materials & announcements</li>
-    <li>Join Google Meet sessions from Classroom</li>
-  </ol>
-
 </section>
 
 <!-- RESOURCES -->
 <section id="resources" class="tab-content">
-
-  <h3>Learning Resources</h3>
-  <p class="muted">Organized by subject & grade.</p>
+  <h3>Resources</h3>
+  <p class="muted">Click a subject to view resources by grade.</p>
 
   <div class="resource-grid">
-    <div class="subject lift">🧮 Math</div>
-    <div class="subject lift">📚 Language</div>
-    <div class="subject lift">🔬 Science</div>
-    <div class="subject lift">🌍 Social Studies</div>
-    <div class="subject lift">🎨 Arts</div>
-    <div class="subject lift">🏃 Health & PE</div>
-  </div>
 
+    <div class="resource-card">
+      <div class="resource-header">🧮 Math</div>
+      <div class="resource-body">
+        <p>JK–5 • Grades 6–8 • Grades 9–12</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <div class="resource-header">📚 Language</div>
+      <div class="resource-body">
+        <p>Reading • Writing • Grammar • French</p>
+      </div>
+    </div>
+
+    <div class="resource-card">
+      <div class="resource-header">🔬 Science</div>
+      <div class="resource-body">
+        <p>Biology • Chemistry • Physics</p>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 </main>
@@ -178,6 +156,9 @@
 <footer class="footer">
   © WeStudy Tutoring
 </footer>
+
+<!-- Confetti canvas -->
+<canvas id="confetti"></canvas>
 
 </body>
 </html>
