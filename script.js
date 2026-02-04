@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   emailJsScript.onload = () => {
     emailjs.init(EMAILJS_PUBLIC_KEY);
     emailReady = true;
-    console.log("EmailJS ready");
   };
 
   /* ================= TABS ================= */
@@ -24,10 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
 
-    const panel = document.getElementById(tabId);
-    const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
-    if (panel) panel.classList.add("active");
-    if (tabBtn) tabBtn.classList.add("active");
+    document.getElementById(tabId)?.classList.add("active");
+    document.querySelector(`.tab[data-tab="${tabId}"]`)?.classList.add("active");
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -53,10 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   inquiryForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!emailReady) {
-      inquiryMsg.textContent = "❌ Email service not ready. Try again.";
-      return;
-    }
+    if (!emailReady) return;
 
     const payload = {
       name: inquiryForm.name.value.trim(),
@@ -66,13 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       subjects: inquiryForm.subjects.value.trim(),
       availability: inquiryForm.availability.value.trim(),
       reply_to: inquiryForm.email.value.trim(),
-      timestamp: new Date().toLocaleString()
+      timestamp: new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" })
     };
-
-    if (!payload.name || !payload.email || !payload.grade || !payload.subjects || !payload.availability) {
-      inquiryMsg.textContent = "❌ Please fill in all required fields.";
-      return;
-    }
 
     inquiryMsg.textContent = "Sending…";
 
@@ -82,8 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       launchConfetti();
       inquiryMsg.textContent = "🎉 Inquiry sent! We’ll contact you within 24 hours.";
       inquiryForm.reset();
-    } catch (err) {
-      console.error(err);
+    } catch {
       inquiryMsg.textContent = "❌ Something went wrong.";
     }
   });
@@ -91,10 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ================= EXTRA SESSIONS CALENDAR ================= */
   const calendarEl = document.getElementById("calendar");
   if (!calendarEl || typeof FullCalendar === "undefined") return;
-
-  const today = new Date();
-  const maxDate = new Date();
-  maxDate.setDate(today.getDate() + 14);
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "timeGridWeek",
@@ -104,7 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
     slotMaxTime: "21:00:00",
     nowIndicator: true,
     height: "auto",
-    validRange: { start: today, end: maxDate },
+    validRange: function () {
+      const start = new Date();
+      const end = new Date();
+      end.setDate(start.getDate() + 14);
+      return { start, end };
+    },
     headerToolbar: {
       left: "prev,next",
       center: "title",
@@ -114,24 +103,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   calendar.render();
 
-  /* ===== DEMO AVAILABILITY ===== */
+  /* ===== DEMO AVAILABILITY (ET SAFE) ===== */
+  function makeETDate(daysFromNow, hour, minute) {
+    const d = new Date();
+    d.setDate(d.getDate() + daysFromNow);
+    d.setHours(hour, minute, 0, 0);
+    return d;
+  }
+
   const demoSlots = [
-    { days: 1, time: "16:00" },
-    { days: 2, time: "17:00" },
-    { days: 3, time: "15:30" }
+    { start: makeETDate(1, 16, 0), length: 60 },
+    { start: makeETDate(2, 17, 0), length: 90 },
+    { start: makeETDate(3, 15, 30), length: 120 }
   ];
 
   demoSlots.forEach(slot => {
-    const d = new Date();
-    d.setDate(d.getDate() + slot.days);
-    const [h, m] = slot.time.split(":");
-    d.setHours(h, m, 0, 0);
-
     calendar.addEvent({
       title: "Available",
-      start: d,
-      end: new Date(d.getTime() + 60 * 60000),
-      className: "available"
+      start: slot.start,
+      end: new Date(slot.start.getTime() + slot.length * 60000),
+      className: "available",
+      extendedProps: { maxDuration: slot.length }
     });
   });
 
@@ -141,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("bookingForm");
   const bookingMsg = document.getElementById("bookingMsg");
   const selectedTimeText = document.getElementById("selectedTimeText");
+  const durationSelect = bookingForm.duration;
 
   let selectedEvent = null;
   const activeBookings = [];
@@ -151,9 +144,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!info.event.classNames.includes("available")) return;
 
     selectedEvent = info.event;
+    const maxDuration = info.event.extendedProps.maxDuration;
+
     selectedTimeText.textContent =
       "Selected time: " +
       info.event.start.toLocaleString("en-CA", { timeZone: "America/Toronto" });
+
+    // Build duration options dynamically
+    durationSelect.innerHTML = '<option value="">Select duration</option>';
+    [30, 60, 90, 120].forEach(min => {
+      if (min <= maxDuration) {
+        const opt = document.createElement("option");
+        opt.value = min;
+        opt.textContent = min === 60 ? "1 hour" : min + " minutes";
+        durationSelect.appendChild(opt);
+      }
+    });
 
     bookingForm.reset();
     bookingMsg.textContent = "";
@@ -199,9 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             subjects: notes
           }
         );
-      } catch (err) {
-        console.error("Confirmation email failed", err);
-      }
+      } catch {}
     }
 
     launchConfetti();
