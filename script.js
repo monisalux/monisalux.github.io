@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const TEMPLATE_TO_YOU = "westudy_inquiry";
   const TEMPLATE_AUTOREPLY = "template_autoreply";
 
+  /* ================= APPS SCRIPT (Stage 2.3) ================= */
+  const BOOKING_API_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; // from Apps Script deployment
+  const TZ = "America/Toronto";
+
   let emailReady = false;
 
   /* ================= LOAD EMAILJS ================= */
@@ -28,11 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // Fix FullCalendar render issue when tab becomes visible
+    // Fix FullCalendar render when tab becomes visible
     if (tabId === "extras" && window.extraSessionsCalendar) {
-      setTimeout(() => {
-        window.extraSessionsCalendar.updateSize();
-      }, 50);
+      setTimeout(() => window.extraSessionsCalendar.updateSize(), 50);
     }
   }
 
@@ -45,10 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const header = e.target.closest(".resource-header");
     if (!header) return;
     const card = header.parentElement;
-    card.setAttribute(
-      "data-open",
-      card.getAttribute("data-open") === "true" ? "false" : "true"
-    );
+    card.setAttribute("data-open", card.getAttribute("data-open") === "true" ? "false" : "true");
   });
 
   /* ================= INQUIRY FORM ================= */
@@ -67,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       subjects: inquiryForm.subjects.value.trim(),
       availability: inquiryForm.availability.value.trim(),
       reply_to: inquiryForm.email.value.trim(),
-      timestamp: new Date().toLocaleString("en-CA", { timeZone: "America/Toronto" })
+      timestamp: new Date().toLocaleString("en-CA", { timeZone: TZ })
     };
 
     inquiryMsg.textContent = "Sending…";
@@ -87,10 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarEl = document.getElementById("calendar");
   if (!calendarEl || typeof FullCalendar === "undefined") return;
 
-  window.extraSessionsCalendar = new FullCalendar.Calendar(calendarEl, {
-
+  const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "timeGridWeek",
-    timeZone: "America/Toronto",
+    timeZone: TZ,
     allDaySlot: false,
     slotMinTime: "08:00:00",
     slotMaxTime: "21:00:00",
@@ -102,155 +100,206 @@ document.addEventListener("DOMContentLoaded", () => {
       end.setDate(start.getDate() + 14);
       return { start, end };
     },
-    headerToolbar: {
-      left: "prev,next",
-      center: "title",
-      right: ""
-    }
+    headerToolbar: { left: "prev,next", center: "title", right: "" }
   });
 
-  window.extraSessionsCalendar.render();
+  window.extraSessionsCalendar = calendar;
+  calendar.render();
 
-  /* ===== DEMO AVAILABILITY (ET SAFE) ===== */
-  function makeETDate(daysFromNow, hour, minute) {
-    const d = new Date();
-    d.setDate(d.getDate() + daysFromNow);
-    d.setHours(hour, minute, 0, 0);
-    return d;
-  }
-
-  function nextWeekday(dayIndex, hour, minute) {
-  const d = new Date();
-  const diff = (dayIndex + 7 - d.getDay()) % 7 || 7;
-  d.setDate(d.getDate() + diff);
-  d.setHours(hour, minute, 0, 0);
-  return d;
-}
-
-const demoSlots = [
-  // Wed
-  { start: nextWeekday(3, 16, 0), length: 60 },
-  { start: nextWeekday(3, 18, 0), length: 90 },
-
-  // Thu
-  { start: nextWeekday(4, 15, 30), length: 60 },
-
-  // Fri
-  { start: nextWeekday(5, 16, 0), length: 120 },
-
-  // Sat
-  { start: nextWeekday(6, 8, 30), length: 120 }
-];
-
-  demoSlots.forEach(slot => {
-    window.extraSessionsCalendar.addEvent({
-      title: "Available",
-      start: slot.start,
-      end: new Date(slot.start.getTime() + slot.length * 60000),
-      className: "available",
-      extendedProps: { maxDuration: slot.length }
-    });
-  });
-
-  /* ================= BOOKING MODAL ================= */
+  // Modal elements
   const modal = document.getElementById("bookingModal");
   const closeModal = document.getElementById("closeModal");
   const bookingForm = document.getElementById("bookingForm");
   const bookingMsg = document.getElementById("bookingMsg");
   const selectedTimeText = document.getElementById("selectedTimeText");
   const durationSelect = bookingForm.duration;
+
+  // Add extra close behaviors
   const modalX = document.getElementById("modalX");
-
-  modalX.onclick = () => modal.classList.add("hidden");
-  let selectedEvent = null;
-  const activeBookings = [];
-
+  modalX && (modalX.onclick = () => modal.classList.add("hidden"));
   closeModal.onclick = () => modal.classList.add("hidden");
-  
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.classList.add("hidden");
+  modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) modal.classList.add("hidden");
+  });
+
+  let selectedAvailability = null;
+
+  async function loadAvailability() {
+    calendar.getEvents().forEach(ev => ev.remove());
+
+    const url = `${BOOKING_API_URL}?action=availability`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.ok) {
+      console.error(data);
+      return;
+    }
+
+    data.slots.forEach(slot => {
+      const start = new Date(slot.start);
+      const end = new Date(slot.end);
+
+      calendar.addEvent({
+        title: "Available",
+        start,
+        end,
+        className: "available",
+        extendedProps: {
+          availabilityId: slot.id,
+          maxMinutes: slot.maxMinutes
+        }
+      });
+    });
+  }
+
+  // Click available -> open booking modal
+  calendar.on("eventClick", (info) => {
+    const ev = info.event;
+
+    if (ev.classNames.includes("available")) {
+      selectedAvailability = ev;
+
+      const maxMinutes = ev.extendedProps.maxMinutes;
+
+      selectedTimeText.textContent =
+        "Selected time: " +
+        ev.start.toLocaleString("en-CA", { timeZone: TZ });
+
+      // build duration options to fit slot
+      durationSelect.innerHTML = '<option value="">Select duration</option>';
+      [30, 60, 90, 120].forEach(min => {
+        if (min <= maxMinutes) {
+          const opt = document.createElement("option");
+          opt.value = String(min);
+          opt.textContent =
+            min === 30 ? "30 minutes" :
+            min === 60 ? "1 hour" :
+            min === 90 ? "1.5 hours" : "2 hours";
+          durationSelect.appendChild(opt);
+        }
+      });
+
+      bookingForm.reset();
+      bookingMsg.textContent = "";
+      modal.classList.remove("hidden");
+      return;
+    }
+
+    // Cancel flow for booked events (we add these after booking)
+    if (ev.classNames.includes("booked")) {
+      const studentNumber = prompt("Enter your Student Number to cancel:");
+      if (!studentNumber) return;
+      const email = prompt("Enter your Email to cancel:");
+      if (!email) return;
+
+      cancelBooking(ev.extendedProps.bookingId, studentNumber, email);
     }
   });
 
-  document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    modal.classList.add("hidden");
-  }
-});
-
-  window.extraSessionsCalendar.on("eventClick", (info) => {
-    if (!info.event.classNames.includes("available")) return;
-
-    selectedEvent = info.event;
-    const maxDuration = info.event.extendedProps.maxDuration;
-
-    selectedTimeText.textContent =
-      "Selected time: " +
-      info.event.start.toLocaleString("en-CA", { timeZone: "America/Toronto" });
-
-    // Build duration options dynamically
-    durationSelect.innerHTML = '<option value="">Select duration</option>';
-    [30, 60, 90, 120].forEach(min => {
-      if (min <= maxDuration) {
-        const opt = document.createElement("option");
-        opt.value = min;
-        opt.textContent = min === 60 ? "1 hour" : min + " minutes";
-        durationSelect.appendChild(opt);
-      }
-    });
-
-    bookingForm.reset();
-    bookingMsg.textContent = "";
-    modal.classList.remove("hidden");
-  });
-
+  // Book submit -> POST to Apps Script
   bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const studentNumber = bookingForm.studentNumber.value.trim();
     const email = bookingForm.email.value.trim();
-    const duration = Number(bookingForm.duration.value);
+    const durationMinutes = Number(bookingForm.duration.value);
     const notes = bookingForm.notes.value.trim();
 
-    if (!studentNumber || !email || !duration || !notes) {
+    if (!studentNumber || !email || !durationMinutes || !notes) {
       bookingMsg.textContent = "❌ Please complete all fields.";
       return;
     }
-
-    if (activeBookings.some(b => b.studentNumber === studentNumber)) {
-      bookingMsg.textContent = "❌ You already have an active booking.";
+    if (!selectedAvailability) {
+      bookingMsg.textContent = "❌ No availability selected.";
       return;
     }
 
-    selectedEvent.remove();
-    window.extraSessionsCalendar.addEvent({
-      title: "Booked",
-      start: selectedEvent.start,
-      end: new Date(selectedEvent.start.getTime() + duration * 60000),
-      className: "booked"
-    });
+    bookingMsg.textContent = "Booking…";
 
-    activeBookings.push({ studentNumber, email });
+    try {
+      const resp = await fetch(BOOKING_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "book",
+          availabilityId: selectedAvailability.extendedProps.availabilityId,
+          studentNumber,
+          email,
+          durationMinutes,
+          notes
+        })
+      });
 
-    if (emailReady) {
-      try {
-        await emailjs.send(
-          EMAILJS_SERVICE_ID,
-          TEMPLATE_AUTOREPLY,
-          {
-            name: "Student",
-            reply_to: email,
-            subjects: notes
-          }
-        );
-      } catch {}
+      const data = await resp.json();
+      if (!data.ok) {
+        bookingMsg.textContent = "❌ " + (data.error || "Booking failed");
+        return;
+      }
+
+      // send confirmation email (parent)
+      if (emailReady) {
+        try {
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            TEMPLATE_AUTOREPLY,
+            {
+              name: "WeStudy Student",
+              reply_to: email,
+              grade: "",
+              subjects: `Extra Session booked: ${notes}`
+            }
+          );
+        } catch (err) {
+          console.error("Confirmation email failed:", err);
+        }
+      }
+
+      launchConfetti();
+      modal.classList.add("hidden");
+      alert("🎉 Booking confirmed! A confirmation email has been sent.");
+
+      await loadAvailability(); // refresh calendar slots
+
+      // Add booked event for visual (optional; loadAvailability already removed availability)
+      // If you want booked events shown too, we can add a separate endpoint later.
+
+    } catch (err) {
+      console.error(err);
+      bookingMsg.textContent = "❌ Booking failed. Try again.";
     }
-
-    launchConfetti();
-    modal.classList.add("hidden");
-    alert("🎉 Booking confirmed! A confirmation email has been sent.");
   });
+
+  async function cancelBooking(bookingId, studentNumber, email) {
+    try {
+      const resp = await fetch(BOOKING_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "cancel",
+          bookingId,
+          studentNumber,
+          email
+        })
+      });
+
+      const data = await resp.json();
+      if (!data.ok) {
+        alert("❌ " + (data.error || "Cancel failed"));
+        return;
+      }
+
+      alert("✅ Booking cancelled.");
+      await loadAvailability();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Cancel failed.");
+    }
+  }
+
+  // Initial load
+  loadAvailability();
 
 });
 
