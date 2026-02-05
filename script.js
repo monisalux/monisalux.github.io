@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         start: slot.start,
         end: slot.end,
         display: "block",          // 🔥 REQUIRED
-        className: "available",
+        classNames: ["available"],
         extendedProps: {
           availabilityId: slot.id,
           maxMinutes: slot.maxMinutes
