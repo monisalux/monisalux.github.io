@@ -81,6 +81,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /**************** JOIN US FORM (EMAILJS) ****************/
+  const joinForm = document.getElementById("joinForm");
+
+  joinForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!emailReady) return;
+
+    const payload = {
+      name: joinForm.studentName.value.trim(), // matches {{name}}
+      grade: joinForm.grade.value.trim(),
+      subjects: joinForm.subjects.value.trim(),
+      phone: joinForm.phone.value.trim(),
+      email: joinForm.email.value.trim(),
+      availability: joinForm.availability.value.trim(),
+      message: joinForm.message.value.trim() || "N/A",
+      reply_to: joinForm.email.value.trim(),
+      timestamp: new Date().toLocaleString("en-CA", { timeZone: TZ })
+    };
+
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_TO_YOU, payload);
+      await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_AUTOREPLY, payload);
+
+      launchConfetti();
+      alert("🎉 Thanks for joining! We’ll be in touch shortly.");
+      joinForm.reset();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Something went wrong. Please try again.");
+    }
+  });
+
   /**************** EXTRA SESSIONS CALENDAR ****************/
   const BOOKING_API_URL =
     "https://script.google.com/macros/s/AKfycbycNYRfD73u3_QmmTgUPnrjSaa4GRRTGE9eEq2T08u5-h33ZA3KhYrpauGA4_mvGTV5/exec";
@@ -90,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "timeGridWeek",
-    timeZone: TZ,
     allDaySlot: false,
     slotMinTime: "08:00:00",
     slotMaxTime: "21:00:00",
@@ -117,35 +148,33 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
-  calendar.getEvents().forEach(ev => ev.remove());
+    calendar.getEvents().forEach(ev => ev.remove());
 
-  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
-  const data = await res.json();
-  if (!data.ok) return;
+    const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+    const data = await res.json();
+    if (!data.ok) return;
 
-  data.slots.forEach(slot => {
-    // Parse UTC times
-    const startUTC = new Date(slot.start);
-    const endUTC = new Date(slot.end);
+    data.slots.forEach(slot => {
+      const startUTC = new Date(slot.start);
+      const endUTC = new Date(slot.end);
 
-    // 🔥 HARD OFFSET: subtract 5 hours
-    const start = new Date(startUTC.getTime() - 5 * 60 * 60 * 1000);
-    const end = new Date(endUTC.getTime() - 5 * 60 * 60 * 1000);
+      // HARD OFFSET −5h
+      const start = new Date(startUTC.getTime() - 5 * 60 * 60 * 1000);
+      const end = new Date(endUTC.getTime() - 5 * 60 * 60 * 1000);
 
-    calendar.addEvent({
-      title: "Available – Extra Session",
-      start,
-      end,
-      display: "block",
-      classNames: ["available"],
-      extendedProps: {
-        availabilityId: slot.id,
-        maxMinutes: slot.maxMinutes
-      }
+      calendar.addEvent({
+        title: "Available – Extra Session",
+        start,
+        end,
+        display: "block",
+        classNames: ["available"],
+        extendedProps: {
+          availabilityId: slot.id,
+          maxMinutes: slot.maxMinutes
+        }
+      });
     });
-  });
-}
-
+  }
 
   loadAvailability();
 
