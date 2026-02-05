@@ -118,33 +118,44 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
-    calendar.getEvents().forEach(ev => ev.remove());
+  calendar.getEvents().forEach(ev => ev.remove());
 
-    const res = await fetch(`${BOOKING_API_URL}?action=availability`);
-    const data = await res.json();
-    if (!data.ok) return;
+  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+  const data = await res.json();
+  if (!data.ok) return;
 
-    data.slots.forEach(slot => {
-      calendar.addEvent({
-        calendar.addEvent({
-          title:
-            ev.start.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) +
-            " – " +
-            ev.end.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) +
-            "\nAvailable",
-          ...
-        });
-        start: slot.start,
-        end: slot.end,
-        display: "block",          // 🔥 REQUIRED
-        classNames: ["available"],
-        extendedProps: {
-          availabilityId: slot.id,
-          maxMinutes: slot.maxMinutes
-        }
-      });
+  data.slots.forEach(slot => {
+    const startDate = new Date(slot.start);
+    const endDate = new Date(slot.end);
 
+    const title =
+      startDate.toLocaleTimeString("en-CA", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: TZ
+      }) +
+      " – " +
+      endDate.toLocaleTimeString("en-CA", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone: TZ
+      }) +
+      "\nAvailable";
+
+    calendar.addEvent({
+      title,
+      start: slot.start,   // UTC string (FullCalendar converts)
+      end: slot.end,
+      display: "block",
+      classNames: ["available"],
+      extendedProps: {
+        availabilityId: slot.id,
+        maxMinutes: slot.maxMinutes
+      }
     });
+  });
+}
+
   }
 
   loadAvailability();
