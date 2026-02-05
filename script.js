@@ -158,7 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const start = new Date(slot.start);
     const end = new Date(slot.end);
 
-    const isAvailable = slot.title === "Available - Extra Session";
+    const isAvailable = slot.title.startsWith("Available");
+    const isBooked = slot.title.startsWith("Booked");
 
     calendar.addEvent({
       title: isAvailable
@@ -171,11 +172,12 @@ document.addEventListener("DOMContentLoaded", () => {
       editable: false,
       extendedProps: {
         availabilityId: isAvailable ? slot.id : null,
-        maxMinutes: slot.maxMinutes || 0
+        maxMinutes: isAvailable ? slot.maxMinutes : 0
       }
     });
   });
 }
+
 
 
   loadAvailability();
