@@ -129,12 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
         title: "Available",
         start: slot.start,
         end: slot.end,
+        display: "block",          // 🔥 REQUIRED
         className: "available",
         extendedProps: {
           availabilityId: slot.id,
           maxMinutes: slot.maxMinutes
         }
       });
+
     });
   }
 
