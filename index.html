@@ -112,66 +112,28 @@
 </section>
 
 <!-- ================= JOIN ================= -->
-<section class="join-us-page">
-  <h1 class="join-title">Join Us</h1>
+<div id="join" class="tab-content">
+  <section class="join-us-page">
+    <h1 class="join-title">Join Us</h1>
 
-  <div class="join-card">
-    <h2 class="join-subtitle">Student Information</h2>
+    <div class="join-card">
+      <h2 class="join-subtitle">Student Information</h2>
 
-    <form id="joinForm">
-      <input
-        type="text"
-        name="studentName"
-        placeholder="Student Name"
-        required
-      />
+      <form id="joinForm">
+        <input type="text" name="studentName" placeholder="Student Name" required />
+        <input type="text" name="grade" placeholder="Grade" required />
+        <input type="text" name="subjects" placeholder="Subject(s)" required />
+        <input type="tel" name="phone" placeholder="Phone Number" required />
+        <input type="email" name="email" placeholder="Email Address" required />
+        <input type="text" name="availability" placeholder="Availability" required />
 
-      <input
-        type="text"
-        name="grade"
-        placeholder="Grade"
-        required
-      />
+        <textarea name="message" placeholder="Message (optional)"></textarea>
 
-      <input
-        type="text"
-        name="subjects"
-        placeholder="Subject(s)"
-        required
-      />
-
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone Number"
-        required
-      />
-
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        required
-      />
-
-      <input
-        type="text"
-        name="availability"
-        placeholder="Availability (days/times)"
-        required
-      />
-
-      <textarea
-        name="message"
-        placeholder="Message (optional)"
-      ></textarea>
-
-      <button type=Submit Inquiry" class="join-submit">
-        Submit
-      </button>
-    </form>
-  </div>
-</section>
+        <button type="submit" class="join-submit">Submit</button>
+      </form>
+    </div>
+  </section>
+</div>
 
 
 <!-- ================= RESOURCES ================= -->
