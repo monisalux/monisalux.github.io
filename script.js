@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**************** EXTRA SESSIONS CALENDAR ****************/
   const BOOKING_API_URL =
-    "https://script.google.com/macros/s/AKfycbz5VT7Qj-qxS_MuAKe_iBvQK7QaQLjuD0zr1difadgY4_Tvknl9Dqv43C4EM_f9g2z-_Q/exec";
+    "https://script.google.com/macros/s/AKfycbycNYRfD73u3_QmmTgUPnrjSaa4GRRTGE9eEq2T08u5-h33ZA3KhYrpauGA4_mvGTV5/exec";
 
   const calendarEl = document.getElementById("calendar");
   if (!calendarEl || typeof FullCalendar === "undefined") return;
