@@ -112,26 +112,67 @@
 </section>
 
 <!-- ================= JOIN ================= -->
-<section id="join" class="tab-content">
-  <h3>Submit an Inquiry</h3>
-  <p class="muted">We’ll get back to you within 24 hours.</p>
+<section class="join-us-page">
+  <h1 class="join-title">Join Us</h1>
 
-  <form class="join-form" id="inquiryForm">
-  <input name="name" required placeholder="Parent / Student Name">
-  <input name="email" required type="email" placeholder="Email">
-  <input name="phone" placeholder="Phone Number">
-  <input name="grade" required placeholder="Student Grade">
-  <input name="subjects" required placeholder="Subject(s)">
-  <textarea name="availability" required placeholder="Availability"></textarea>
+  <div class="join-card">
+    <h2 class="join-subtitle">Student Information</h2>
 
-  <button class="btn btn-primary bounce" type="submit">
-    Submit Inquiry
-  </button>
+    <form id="joinForm">
+      <input
+        type="text"
+        name="studentName"
+        placeholder="Student Name"
+        required
+      />
 
-  <p id="formMsg"></p>
-</form>
+      <input
+        type="text"
+        name="grade"
+        placeholder="Grade"
+        required
+      />
 
+      <input
+        type="text"
+        name="subjects"
+        placeholder="Subject(s)"
+        required
+      />
+
+      <input
+        type="tel"
+        name="phone"
+        placeholder="Phone Number"
+        required
+      />
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        required
+      />
+
+      <input
+        type="text"
+        name="availability"
+        placeholder="Availability (days/times)"
+        required
+      />
+
+      <textarea
+        name="message"
+        placeholder="Message (optional)"
+      ></textarea>
+
+      <button type=Submit Inquiry" class="join-submit">
+        Submit
+      </button>
+    </form>
+  </div>
 </section>
+
 
 <!-- ================= RESOURCES ================= -->
 <section id="resources" class="tab-content">
