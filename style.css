@@ -387,6 +387,41 @@ body{
   transform: translateY(-1px);
 }
 
+/* ===== JOIN US SUBMIT BUTTON ===== */
+.join-submit {
+  align-self: center;
+  margin-top: 24px;
+  padding: 16px 48px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  /* inherits your theme color */
+  background: currentColor;
+  color: #fff;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+/* hover */
+.join-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0.95;
+}
+
+/* click */
+.join-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
 .join-submit:active {
   transform: translateY(0);
 }
