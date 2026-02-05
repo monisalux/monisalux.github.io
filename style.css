@@ -151,9 +151,6 @@ body{
 }
 .stat span{display:block;font-size:1.6rem}
 
-/* Form */
-.join-form{max-width:500px;display:grid;gap:12px}
-
 /* Resources */
 .resource-grid{display:grid;gap:16px}
 .resource-card{
