@@ -148,42 +148,35 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
-    // Clear all events
-    calendar.getEvents().forEach(ev => ev.remove());
+  calendar.getEvents().forEach(ev => ev.remove());
 
-    let data;
-    try {
-      const res = await fetch(`${BOOKING_API_URL}?action=availability`, { cache: "no-store" });
-      data = await res.json();
-    } catch (err) {
-      console.error("Availability fetch failed:", err);
-      return;
-    }
+  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+  const data = await res.json();
+  if (!data.ok) return;
 
-    if (!data || !data.ok) return;
+  data.slots.forEach(slot => {
+    const start = new Date(slot.start);
+    const end = new Date(slot.end);
 
-    // Expect: { ok:true, slots:[{id,start,end,maxMinutes}] }
-    (data.slots || []).forEach(slot => {
-      const startUTC = new Date(slot.start);
-      const endUTC = new Date(slot.end);
+    const isAvailable = slot.title === "Available - Extra Session";
 
-      // Your current setup: treat returned times as-is
-      const start = new Date(startUTC.getTime());
-      const end = new Date(endUTC.getTime());
-
-      calendar.addEvent({
-        title: "Available – Extra Session",
-        start,
-        end,
-        display: "block",
-        classNames: ["available"],
-        extendedProps: {
-          availabilityId: slot.id,
-          maxMinutes: slot.maxMinutes
-        }
-      });
+    calendar.addEvent({
+      title: isAvailable
+        ? "Available – Extra Session"
+        : "Booked",
+      start,
+      end,
+      display: "block",
+      classNames: isAvailable ? ["available"] : ["booked"],
+      editable: false,
+      extendedProps: {
+        availabilityId: isAvailable ? slot.id : null,
+        maxMinutes: slot.maxMinutes || 0
+      }
     });
-  }
+  });
+}
+
 
   loadAvailability();
 
