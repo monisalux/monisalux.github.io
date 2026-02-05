@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const now = new Date();
       const start = new Date(now);
       const end = new Date(now);
-      start.setHours(0,0,0,0);
+      start.setHours(0, 0, 0, 0);
       end.setDate(end.getDate() + 14);
       return { start, end };
     },
@@ -148,17 +148,26 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
+    // Clear all events
     calendar.getEvents().forEach(ev => ev.remove());
 
-    const res = await fetch(`${BOOKING_API_URL}?action=availability`);
-    const data = await res.json();
-    if (!data.ok) return;
+    let data;
+    try {
+      const res = await fetch(`${BOOKING_API_URL}?action=availability`, { cache: "no-store" });
+      data = await res.json();
+    } catch (err) {
+      console.error("Availability fetch failed:", err);
+      return;
+    }
 
-    data.slots.forEach(slot => {
+    if (!data || !data.ok) return;
+
+    // Expect: { ok:true, slots:[{id,start,end,maxMinutes}] }
+    (data.slots || []).forEach(slot => {
       const startUTC = new Date(slot.start);
       const endUTC = new Date(slot.end);
 
-      // HARD OFFSET −5h
+      // Your current setup: treat returned times as-is
       const start = new Date(startUTC.getTime());
       const end = new Date(endUTC.getTime());
 
@@ -189,11 +198,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedAvailability = null;
 
-  modalX.onclick = closeModal.onclick = () => modal.classList.add("hidden");
+  // Optional: disable submit until duration chosen
+  const bookingSubmitBtn = bookingForm.querySelector('button[type="submit"]');
+
+  function closeBookingModal() {
+    modal.classList.add("hidden");
+    selectedAvailability = null;
+    bookingMsg.textContent = "";
+    if (bookingSubmitBtn) bookingSubmitBtn.disabled = false;
+  }
+
+  modalX.onclick = closeModal.onclick = closeBookingModal;
+
   modal.addEventListener("click", e => {
-    if (e.target === modal) modal.classList.add("hidden");
+    if (e.target === modal) closeBookingModal();
   });
 
+  // Only allow booking on available slots
   calendar.on("eventClick", info => {
     const ev = info.event;
     if (!ev.classNames.includes("available")) return;
@@ -201,14 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedAvailability = ev;
 
     selectedTimeText.textContent =
-      "Selected time: " +
-      ev.start.toLocaleString("en-CA", { timeZone: TZ });
+      `Selected time: ${ev.start.toLocaleString("en-CA")}`;
 
     durationSelect.innerHTML = `<option value="">Select duration</option>`;
-    [30,60,90,120].forEach(min => {
-      if (min <= ev.extendedProps.maxMinutes) {
+
+    [30, 60, 90, 120].forEach(min => {
+      if (min <= (ev.extendedProps.maxMinutes || 0)) {
         const o = document.createElement("option");
-        o.value = min;
+        o.value = String(min);
         o.textContent =
           min === 30 ? "30 minutes" :
           min === 60 ? "1 hour" :
@@ -219,37 +240,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
     bookingForm.reset();
     bookingMsg.textContent = "";
+    if (bookingSubmitBtn) bookingSubmitBtn.disabled = true;
+
     modal.classList.remove("hidden");
+  });
+
+  // Enable submit only after duration selected
+  durationSelect.addEventListener("change", () => {
+    if (bookingSubmitBtn) bookingSubmitBtn.disabled = !durationSelect.value;
   });
 
   bookingForm.addEventListener("submit", async e => {
     e.preventDefault();
     if (!selectedAvailability) return;
 
+    const durationMinutes = Number(durationSelect.value);
+    if (!durationMinutes) {
+      bookingMsg.textContent = "❌ Please select a duration.";
+      return;
+    }
+
     bookingMsg.textContent = "Booking…";
+    if (bookingSubmitBtn) bookingSubmitBtn.disabled = true;
 
-    const resp = await fetch(BOOKING_API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "book",
-        availabilityId: selectedAvailability.extendedProps.availabilityId,
-        studentNumber: bookingForm.studentNumber.value.trim(),
-        email: bookingForm.email.value.trim(),
-        durationMinutes: Number(bookingForm.duration.value),
-        notes: bookingForm.notes.value.trim()
-      })
-    });
+    let data;
+    try {
+      const resp = await fetch(BOOKING_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "book",
+          availabilityId: selectedAvailability.extendedProps.availabilityId,
+          studentNumber: bookingForm.studentNumber.value.trim(),
+          email: bookingForm.email.value.trim(),
+          durationMinutes,
+          notes: bookingForm.notes.value.trim()
+        })
+      });
 
-    const data = await resp.json();
-    if (!data.ok) {
-      bookingMsg.textContent = "❌ " + data.error;
+      data = await resp.json();
+    } catch (err) {
+      console.error("Booking request failed:", err);
+      bookingMsg.textContent = "❌ Network error. Try again.";
+      if (bookingSubmitBtn) bookingSubmitBtn.disabled = false;
+      return;
+    }
+
+    if (!data || !data.ok) {
+      bookingMsg.textContent = "❌ " + (data?.error || "Booking failed.");
+      if (bookingSubmitBtn) bookingSubmitBtn.disabled = false;
       return;
     }
 
     launchConfetti();
     alert("🎉 Booking confirmed!");
-    modal.classList.add("hidden");
+    closeBookingModal();
     loadAvailability();
   });
 
@@ -265,7 +310,7 @@ function launchConfetti() {
     const piece = document.createElement("span");
     piece.className = "confetti";
     piece.style.left = Math.random() * 100 + "vw";
-    piece.style.backgroundColor = `hsl(${Math.random()*360},100%,70%)`;
+    piece.style.backgroundColor = `hsl(${Math.random() * 360},100%,70%)`;
     container.appendChild(piece);
   }
 
