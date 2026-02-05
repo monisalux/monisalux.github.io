@@ -428,3 +428,26 @@ body{
   transform: scale(1.02);
 }
 
+/* Available slots */
+.fc-event.available {
+  background-color: #35c9b7;
+  border-color: #35c9b7;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Booked slots */
+.fc-event.booked {
+  background-color: #bfc6cc;
+  border-color: #bfc6cc;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.fc-event.available:hover {
+  transform: scale(1.02);
+  transition: transform 0.15s ease;
+}
+
+
