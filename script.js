@@ -126,7 +126,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     data.slots.forEach(slot => {
       calendar.addEvent({
-        title: "Available",
+        calendar.addEvent({
+          title:
+            ev.start.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) +
+            " – " +
+            ev.end.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) +
+            "\nAvailable",
+          ...
+        });
         start: slot.start,
         end: slot.end,
         display: "block",          // 🔥 REQUIRED
