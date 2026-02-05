@@ -150,21 +150,22 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadAvailability() {
   calendar.getEvents().forEach(ev => ev.remove());
 
-  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+  const res = await fetch(`${BOOKING_API_URL}?action=availability`, { cache: "no-store" });
   const data = await res.json();
   if (!data.ok) return;
 
-  data.slots.forEach(slot => {
+  (data.slots || []).forEach(slot => {
     const start = new Date(slot.start);
     const end = new Date(slot.end);
 
-    const isAvailable = slot.title.startsWith("Available");
-    const isBooked = slot.title.startsWith("Booked");
+    const titleRaw = (slot.title || "").toString().trim().toLowerCase();
+
+    // If title is missing, assume it's AVAILABLE (backward compatible)
+    const isBooked = titleRaw.startsWith("booked");
+    const isAvailable = titleRaw.startsWith("available") || (!slot.title && (slot.maxMinutes > 0));
 
     calendar.addEvent({
-      title: isAvailable
-        ? "Available – Extra Session"
-        : "Booked",
+      title: isAvailable ? "Available" : "Booked",
       start,
       end,
       display: "block",
@@ -172,11 +173,12 @@ document.addEventListener("DOMContentLoaded", () => {
       editable: false,
       extendedProps: {
         availabilityId: isAvailable ? slot.id : null,
-        maxMinutes: isAvailable ? slot.maxMinutes : 0
+        maxMinutes: isAvailable ? (slot.maxMinutes || 0) : 0
       }
     });
   });
 }
+
 
 
 
