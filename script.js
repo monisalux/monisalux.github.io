@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     height: "auto",
     validRange: function () {
     const now = new Date(
-      new Date().toLocaleString("en-US", { timeZone: TZ })
+      new Date().toLocaleString("en-CA", { timeZone: TZ })
         );
       
         const end = new Date(now);
