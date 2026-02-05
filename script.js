@@ -117,43 +117,35 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
-    calendar.getEvents().forEach(ev => ev.remove());
+  calendar.getEvents().forEach(ev => ev.remove());
 
-    const res = await fetch(`${BOOKING_API_URL}?action=availability`);
-    const data = await res.json();
-    if (!data.ok) return;
+  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+  const data = await res.json();
+  if (!data.ok) return;
 
-    data.slots.forEach(slot => {
-      const startDate = new Date(slot.start);
-      const endDate = new Date(slot.end);
+  data.slots.forEach(slot => {
+    // Parse UTC times
+    const startUTC = new Date(slot.start);
+    const endUTC = new Date(slot.end);
 
-      const title =
-        startDate.toLocaleTimeString("en-CA", {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: TZ
-        }) +
-        " – " +
-        endDate.toLocaleTimeString("en-CA", {
-          hour: "numeric",
-          minute: "2-digit",
-          timeZone: TZ
-        }) +
-        "\nAvailable";
+    // 🔥 HARD OFFSET: subtract 5 hours
+    const start = new Date(startUTC.getTime() - 5 * 60 * 60 * 1000);
+    const end = new Date(endUTC.getTime() - 5 * 60 * 60 * 1000);
 
-      calendar.addEvent({
-        title,
-        start: slot.start,
-        end: slot.end,
-        display: "block",
-        classNames: ["available"],
-        extendedProps: {
-          availabilityId: slot.id,
-          maxMinutes: slot.maxMinutes
-        }
-      });
+    calendar.addEvent({
+      title: "Available – Extra Session",
+      start,
+      end,
+      display: "block",
+      classNames: ["available"],
+      extendedProps: {
+        availabilityId: slot.id,
+        maxMinutes: slot.maxMinutes
+      }
     });
-  }
+  });
+}
+
 
   loadAvailability();
 
