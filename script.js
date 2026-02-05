@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // fix FullCalendar when switching tabs
     if (tabId === "extras" && window.extraSessionsCalendar) {
       setTimeout(() => window.extraSessionsCalendar.updateSize(), 50);
     }
@@ -118,44 +117,42 @@ document.addEventListener("DOMContentLoaded", () => {
   calendar.render();
 
   async function loadAvailability() {
-  calendar.getEvents().forEach(ev => ev.remove());
+    calendar.getEvents().forEach(ev => ev.remove());
 
-  const res = await fetch(`${BOOKING_API_URL}?action=availability`);
-  const data = await res.json();
-  if (!data.ok) return;
+    const res = await fetch(`${BOOKING_API_URL}?action=availability`);
+    const data = await res.json();
+    if (!data.ok) return;
 
-  data.slots.forEach(slot => {
-    const startDate = new Date(slot.start);
-    const endDate = new Date(slot.end);
+    data.slots.forEach(slot => {
+      const startDate = new Date(slot.start);
+      const endDate = new Date(slot.end);
 
-    const title =
-      startDate.toLocaleTimeString("en-CA", {
-        hour: "numeric",
-        minute: "2-digit",
-        timeZone: TZ
-      }) +
-      " – " +
-      endDate.toLocaleTimeString("en-CA", {
-        hour: "numeric",
-        minute: "2-digit",
-        timeZone: TZ
-      }) +
-      "\nAvailable";
+      const title =
+        startDate.toLocaleTimeString("en-CA", {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZone: TZ
+        }) +
+        " – " +
+        endDate.toLocaleTimeString("en-CA", {
+          hour: "numeric",
+          minute: "2-digit",
+          timeZone: TZ
+        }) +
+        "\nAvailable";
 
-    calendar.addEvent({
-      title,
-      start: slot.start,   // UTC string (FullCalendar converts)
-      end: slot.end,
-      display: "block",
-      classNames: ["available"],
-      extendedProps: {
-        availabilityId: slot.id,
-        maxMinutes: slot.maxMinutes
-      }
+      calendar.addEvent({
+        title,
+        start: slot.start,
+        end: slot.end,
+        display: "block",
+        classNames: ["available"],
+        extendedProps: {
+          availabilityId: slot.id,
+          maxMinutes: slot.maxMinutes
+        }
+      });
     });
-  });
-}
-
   }
 
   loadAvailability();
