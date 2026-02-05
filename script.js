@@ -95,16 +95,28 @@ document.addEventListener("DOMContentLoaded", () => {
     nowIndicator: true,
     height: "auto",
     validRange: function () {
-      const start = new Date();
-      const end = new Date();
-      end.setDate(start.getDate() + 14);
-      return { start, end };
-    },
+    const now = new Date(
+      new Date().toLocaleString("en-US", { timeZone: TZ })
+        );
+      
+        const end = new Date(now);
+        end.setDate(now.getDate() + 14);
+      
+        return {
+          start: now,
+          end: end
+        };
+      },
+
     headerToolbar: { left: "prev,next", center: "title", right: "" }
   });
 
   window.extraSessionsCalendar = calendar;
   calendar.render();
+  setTimeout(() => {
+    loadAvailability();
+    calendar.updateSize();
+  }, 50);
 
   // Modal elements
   const modal = document.getElementById("bookingModal");
