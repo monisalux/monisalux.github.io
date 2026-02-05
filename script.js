@@ -159,8 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const endUTC = new Date(slot.end);
 
       // HARD OFFSET −5h
-      const start = new Date(startUTC.getTime() - 5 * 60 * 60 * 1000);
-      const end = new Date(endUTC.getTime() - 5 * 60 * 60 * 1000);
+      const start = new Date(startUTC.getTime() * 60 * 60 * 1000);
+      const end = new Date(endUTC.getTime() * 60 * 60 * 1000);
 
       calendar.addEvent({
         title: "Available – Extra Session",
