@@ -810,16 +810,229 @@ body {
   color: var(--turq-dark);
 }
 
+
+/* ===========================
+   MOBILE NAV
+=========================== */
+.mobile-menu-toggle,
+.mobile-menu,
+.mobile-menu-backdrop {
+  display: none;
+}
+
+.mobile-menu-toggle {
+  margin-left: auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.14);
+  color: white;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.mobile-menu-toggle:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+.mobile-menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 999px;
+}
+
+.mobile-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.38);
+  z-index: 998;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(86vw, 360px);
+  height: 100vh;
+  background: white;
+  box-shadow: -16px 0 40px rgba(15,23,42,0.18);
+  z-index: 999;
+  padding: 18px 18px 28px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.28s ease;
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+body.mobile-menu-open .mobile-menu-backdrop {
+  display: block;
+}
+body.mobile-menu-open .mobile-menu {
+  display: block;
+  transform: translateX(0);
+}
+
+.mobile-menu-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.mobile-menu-title {
+  font-family: Fredoka, sans-serif;
+  font-size: 1.4rem;
+  color: var(--dark);
+  margin: 0;
+}
+
+.mobile-menu-close {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: var(--dark);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mobile-menu-links,
+.mobile-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-menu-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 16px 0 8px;
+}
+
+.mobile-nav-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: var(--dark);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-family: Nunito, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.mobile-nav-btn:hover,
+.mobile-nav-btn.active {
+  border-color: rgba(46,196,182,0.45);
+  background: #f0fffe;
+  color: var(--turq-dark);
+}
+
 /* ===========================
    RESPONSIVE
 =========================== */
+@media (max-width: 860px) {
+  .top-bar {
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .top-bar > div[style*="margin-left:auto"] {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .mobile-menu,
+  .mobile-menu-backdrop {
+    display: none;
+  }
+
+  .tabs {
+    display: none;
+  }
+
+  .hero-inner {
+    padding: 26px 18px 84px;
+  }
+
+  .container {
+    padding: 28px 16px 48px;
+  }
+
+  .card,
+  .pricing-card,
+  .review-card,
+  .contact-item,
+  .student-login-card,
+  .modal-card {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .cta-banner {
+    padding: 24px 20px;
+  }
+
+  #calendar {
+    padding: 14px;
+    overflow: hidden;
+  }
+
+  .fc .fc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  .fc-timegrid-slot { height: 38px; }
+}
+
 @media (max-width: 640px) {
   .hero-title { font-size: 1.9rem; }
   .hero-sub   { font-size: 1rem; }
   .hero-actions { flex-direction: column; }
   .hero-actions .btn { text-align: center; }
 
-  .tabs { overflow-x: auto; justify-content: flex-start; }
+  .hero-features {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .section-header h3 {
+    font-size: 1.55rem;
+  }
+
   .tab  { padding: 14px 16px; font-size: 0.88rem; }
 
   .cta-banner { flex-direction: column; text-align: center; }
@@ -827,8 +1040,33 @@ body {
 
   .stats { grid-template-columns: repeat(2, 1fr); }
 
+  .resource-header,
+  .faq-header {
+    padding: 16px 16px;
+    font-size: 0.95rem;
+    align-items: flex-start;
+  }
+
   .modal-actions { flex-direction: column; }
   .modal-actions .btn { width: 100%; text-align: center; }
+
+  .session-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .session-duration-badge {
+    align-self: flex-start;
+  }
+
+  .social-links {
+    flex-direction: column;
+  }
+
+  .social-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===========================
@@ -1355,6 +1593,224 @@ body {
 #mySessionsPanel { margin-bottom: 24px; }
 .hidden { display: none !important; }
 
+
+/* ===========================================
+   COMPREHENSIVE MOBILE — added for full polish
+=========================================== */
+
+/* ── Grids: single column on mobile ── */
+@media (max-width: 640px) {
+
+  /* Tutor cards → 1 col */
+  .card-grid.three {
+    grid-template-columns: 1fr;
+  }
+
+  /* Pricing → 1 col, remove featured lift */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+  .pricing-featured {
+    transform: none;
+    order: -1; /* show most popular first */
+  }
+  .pricing-featured:hover { transform: translateY(-5px); }
+
+  /* Reviews → 1 col */
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Discount cards → 1 col */
+  .discount-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contact → stack */
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+  .map-wrap {
+    min-height: 240px;
+  }
+  .map-wrap iframe {
+    min-height: 240px;
+  }
+
+  /* Hero tighter on very small screens */
+  .hero-title {
+    font-size: 1.72rem;
+    line-height: 1.22;
+  }
+  .hero-sub {
+    font-size: 0.96rem;
+  }
+  .hero-inner {
+    padding-bottom: 76px;
+  }
+
+  /* Cards: ensure full-width, sensible padding */
+  .card-grid.two {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 20px 16px;
+  }
+  .tutor-card {
+    padding: 22px 16px;
+  }
+
+  /* Pricing card full width */
+  .pricing-card {
+    padding: 28px 18px 24px;
+  }
+
+  /* Review card */
+  .review-card {
+    padding: 20px 16px;
+  }
+
+  /* CTA banner button full width */
+  .cta-banner .btn-primary-teal {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Join form → full width labels */
+  .join-submit {
+    width: 100%;
+  }
+
+  /* Footer stack */
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+  }
+
+  /* Modal full-width on small screens */
+  .modal {
+    padding: 12px;
+    align-items: flex-end; /* slide up from bottom */
+  }
+  .modal-card {
+    border-radius: 22px 22px 0 0;
+    max-width: 100%;
+    padding: 24px 20px 32px;
+  }
+
+  /* Login panel stack */
+  .student-login-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .student-login-card .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Section headers tighter */
+  .section-header {
+    margin-bottom: 20px;
+  }
+
+  /* Stat text smaller */
+  .stat span {
+    font-size: 1.5rem;
+  }
+
+  /* Tutor tags wrap tightly */
+  .tutor-tags {
+    gap: 4px;
+  }
+  .tutor-tag {
+    font-size: 0.74rem;
+    padding: 3px 8px;
+  }
+
+  /* Resource body list easier to tap */
+  .resource-body ul li,
+  .faq-body p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+  .link-list a {
+    font-size: 0.9rem;
+  }
+
+  /* Calendar note */
+  .calendar-note {
+    font-size: 0.84rem;
+  }
+
+  /* Session items */
+  .session-date .s-day { font-size: 1.15rem; }
+  .session-detail strong { font-size: 0.9rem; }
+
+  /* Discount card stack */
+  .discount-card {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Pricing badge: stays centered */
+  .pricing-badge {
+    font-size: 0.72rem;
+  }
+
+  /* Contact items */
+  .contact-item {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .contact-icon { font-size: 1.3rem; }
+
+  /* FAQ & resource body padding */
+  .faq-item[data-open="true"] .faq-body {
+    padding: 4px 16px 16px;
+  }
+  .resource-card[data-open="true"] .resource-body {
+    padding: 10px 16px 16px;
+  }
+
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+  .container {
+    overflow-x: hidden;
+  }
+}
+
+/* ── Extra small: 380px and below ── */
+@media (max-width: 380px) {
+  .hero-title { font-size: 1.5rem; }
+  .logo { font-size: 1.6rem; }
+  .pricing-price { font-size: 2.3rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .section-header h3 { font-size: 1.4rem; }
+  .mobile-menu { width: 92vw; }
+}
+
+/* ── Touch: larger tap targets for buttons ── */
+@media (hover: none) and (pointer: coarse) {
+  .btn, .join-submit, .mobile-nav-btn {
+    min-height: 48px;
+  }
+  .resource-header, .faq-header {
+    min-height: 52px;
+  }
+  .tab {
+    min-height: 48px;
+  }
+  .modal-close {
+    width: 36px;
+    height: 36px;
+  }
+}
+
   </style>
 </head>
 
@@ -1380,6 +1836,9 @@ body {
         <button class="btn btn-outline tablink" data-tab="extras">My Schedule</button>
         <button class="btn btn-outline tablink" data-tab="join">Submit Inquiry</button>
       </div>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
     <!-- Hero content -->
@@ -1407,6 +1866,32 @@ body {
     <path d="M0,60 C360,120 720,20 1080,80 C1260,110 1380,70 1440,90 L1440,120 L0,120 Z"></path>
   </svg>
 </header>
+
+<div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <h2 class="mobile-menu-title">WeStudy</h2>
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="mobile-menu-links">
+    <button class="mobile-nav-btn tablink" data-tab="about">About Us</button>
+    <button class="mobile-nav-btn tablink" data-tab="tutors">Our Tutors</button>
+    <button class="mobile-nav-btn tablink" data-tab="pricing">Pricing</button>
+    <button class="mobile-nav-btn tablink" data-tab="reviews">Reviews</button>
+    <button class="mobile-nav-btn tablink" data-tab="join">Join Us</button>
+    <button class="mobile-nav-btn tablink" data-tab="resources">Resources</button>
+    <button class="mobile-nav-btn tablink" data-tab="faq">FAQ</button>
+    <button class="mobile-nav-btn tablink" data-tab="extras">My Schedule</button>
+    <button class="mobile-nav-btn tablink" data-tab="contact">Contact</button>
+  </div>
+
+  <p class="mobile-menu-label">Quick actions</p>
+  <div class="mobile-menu-actions">
+    <button class="btn btn-primary-teal tablink" data-tab="join">Submit Inquiry</button>
+    <button class="btn btn-outline-dark tablink" data-tab="extras">My Schedule</button>
+  </div>
+</aside>
 
 <!-- ================= TABS ================= -->
 <nav class="tabs">
@@ -2105,7 +2590,7 @@ body {
         <div class="contact-icon">📧</div>
         <div>
           <strong>Email</strong>
-          <a href="mailto:jenisha.french@gmail.com"><span class="__cf_email__" data-cfemail="9cf6f9f2f5eff4fdb2faeef9f2fff4dcfbf1fdf5f0b2fff3f1">jenisha.french@gmail.com</span></a>
+          <a href="mailto:jenisha.french@gmail.com"><span class="__cf_email__" data-cfemail="9cf6f9f2f5eff4fdb2faeef9f2fff4dcfbf1fdf5f0b2fff3f1"><span class="__cf_email__" data-cfemail="610b040f081209004f0713040f020921060c00080d4f020e0c">jenisha.french@gmail.com</span></span></a>
         </div>
       </div>
       <div class="contact-item card lift">
@@ -2157,7 +2642,7 @@ body {
 </footer>
 
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
 
 <script>
@@ -2165,10 +2650,15 @@ body {
 function setTab(tabId) {
   document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".mobile-nav-btn").forEach(t => t.classList.remove("active"));
   const section = document.getElementById(tabId);
   if (section) section.classList.add("active");
   const tabBtn = document.querySelector('.tab[data-tab="' + tabId + '"]');
   if (tabBtn) tabBtn.classList.add("active");
+  document.querySelectorAll('.mobile-nav-btn[data-tab="' + tabId + '"]').forEach(function(btn) {
+    btn.classList.add("active");
+  });
+  closeMobileMenu();
   window.scrollTo({ top: 0, behavior: "smooth" });
   if (tabId === "extras" && window.extraSessionsCalendar) {
     setTimeout(function() { window.extraSessionsCalendar.updateSize(); }, 10);
@@ -2176,6 +2666,27 @@ function setTab(tabId) {
     setTimeout(function() { window.extraSessionsCalendar.updateSize(); }, 400);
   }
 }
+
+var mobileMenuToggle = document.getElementById("mobileMenuToggle");
+var mobileMenuClose = document.getElementById("mobileMenuClose");
+var mobileMenuBackdrop = document.getElementById("mobileMenuBackdrop");
+
+function openMobileMenu() {
+  document.body.classList.add("mobile-menu-open");
+  if (mobileMenuToggle) mobileMenuToggle.setAttribute("aria-expanded", "true");
+}
+
+function closeMobileMenu() {
+  document.body.classList.remove("mobile-menu-open");
+  if (mobileMenuToggle) mobileMenuToggle.setAttribute("aria-expanded", "false");
+}
+
+if (mobileMenuToggle) mobileMenuToggle.addEventListener("click", openMobileMenu);
+if (mobileMenuClose) mobileMenuClose.addEventListener("click", closeMobileMenu);
+if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
+window.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeMobileMenu();
+});
 
 document.querySelectorAll(".tab, .tablink").forEach(function(btn) {
   btn.addEventListener("click", function() {
@@ -2287,7 +2798,7 @@ var calendarEl = document.getElementById("calendar");
 if (calendarEl && typeof FullCalendar !== "undefined") {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "timeGridWeek",
+    initialView: window.innerWidth <= 640 ? "timeGridDay" : "timeGridWeek",
     allDaySlot: false,
     slotMinTime: "08:00:00",
     slotMaxTime: "21:00:00",
@@ -2298,7 +2809,15 @@ if (calendarEl && typeof FullCalendar !== "undefined") {
       start.setHours(0,0,0,0); end.setDate(end.getDate() + 14);
       return { start: start, end: end };
     },
-    headerToolbar: { left: "prev,next", center: "title", right: "" }
+    headerToolbar: { left: "prev,next", center: "title", right: window.innerWidth <= 640 ? "" : "" }
+  });
+
+  window.addEventListener("resize", function() {
+    if (!window.extraSessionsCalendar) return;
+    var nextView = window.innerWidth <= 640 ? "timeGridDay" : "timeGridWeek";
+    if (window.extraSessionsCalendar.view && window.extraSessionsCalendar.view.type !== nextView) {
+      window.extraSessionsCalendar.changeView(nextView);
+    }
   });
 
   window.extraSessionsCalendar = calendar;
